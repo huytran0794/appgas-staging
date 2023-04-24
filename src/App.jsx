@@ -26,7 +26,6 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<CustomLayout />}>
-          <Route path="123" element={<CustomPage />} />
           <Route path="login" element={<LoginPage />} />
           {/* Private routes */}
           <Route element={<PrivateRoutes />}>

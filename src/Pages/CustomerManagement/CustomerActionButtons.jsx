@@ -6,7 +6,7 @@ import { SlEye } from "react-icons/sl";
 import { Modal, Popover, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LOCAL_SERVICE } from "../../core/services/localServ";
-import { DesktopView, MobileView } from "../../core/HOC/Responsive";
+import { DesktopView, TabletView, MobileView } from "../../core/HOC/Responsive";
 
 import { TfiMore } from "react-icons/tfi";
 import { useState } from "react";
@@ -16,13 +16,7 @@ const CustomerActionButtons = ({ customerData }) => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const showDeleteConfirm = (
-    title,
-    content = "",
-    handleOK,
-    onCancel,
-    customerData
-  ) => {
+  const showDeleteConfirm = (title, content = "", handleOK) => {
     confirm({
       title: title,
       content: content,
@@ -74,6 +68,7 @@ const CustomerActionButtons = ({ customerData }) => {
     return (
       <>
         <DesktopView>{renderDesktopViewButtons()}</DesktopView>
+        <TabletView>{renderMobileViewButtons()}</TabletView>
         <MobileView>{renderMobileViewButtons()}</MobileView>
       </>
     );

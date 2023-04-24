@@ -35,6 +35,20 @@
   background-color: #1765fd1a !important;
 }
 
+/* For iphone and smaller devices */
+@media (max-width: 450px) {
+  .customer-manage-table .ant-table-cell.fullname > div .customer-info {
+    max-width: 150px;
+  }
+
+  .customer-manage-table .ant-table-cell.fullname > div .customer-name,
+  .customer-manage-table .ant-table-cell.fullname > div .customer-phone {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 /* ======================================== End table cbox css ===== */
 
 /* =============================================================================================== End table css ===== */

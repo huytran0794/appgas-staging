@@ -15,13 +15,17 @@ import { exportToExcel } from "../../core/Components/ExcelReport/exportExcel";
 import { sendMailWithFile } from "../../core/Components/Email/sendMail";
 import CustomNotification from "../../core/Components/Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../core/services/customerServ.firebase";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../core/redux/slice/spinnerSlice";
 
 const CustomerListPage = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [customerList, setCustomerList] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(spinnerActions.setLoadingOn());
     let returnedData = [];
     CUSTOMER_SERVICE_FIREBASE.getCustomerList()
       .then((snapshot) => {
@@ -35,20 +39,27 @@ const CustomerListPage = () => {
               },
             ];
           });
-          setCustomerList(returnedData);
+          setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+            setLoading(false);
+            setCustomerList(returnedData);
+          }, 2000);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
   let handleSearchInput = (searchTxt) => {
     setSearch(searchTxt);
   };
 
   let handleExportFile = (customerList) => {
+    dispatch(spinnerActions.setLoadingOn());
     const fileName = "file_report";
     const currentDate = new Date().getTime();
+
     let fileBlobData = exportToExcel(
       `${fileName}_${currentDate}`,
       customerList
@@ -56,7 +67,7 @@ const CustomerListPage = () => {
 
     const fileRef = ref(storage, `files/${fileName}_${currentDate}.xlsx`);
     uploadBytes(fileRef, fileBlobData)
-      .then(() => {
+      .then((snapshot) => {
         CustomNotification("info", "Exporting data", "Please wait a minute");
         return getDownloadURL(fileRef);
       })
@@ -70,13 +81,15 @@ const CustomerListPage = () => {
         return sendMailWithFile(templateParams);
       })
       .then((result) => {
+        setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
         CustomNotification(
           "success",
           "Email is sent",
           "Please check your inbox"
         );
-        console.log("result");
-        console.log(result.text);
       })
       .catch((error) => {
         CustomNotification("error", "Error", "Something went wrong");
@@ -111,7 +124,7 @@ const CustomerListPage = () => {
       </div>
     );
   };
-  if (customerList.length) {
+  if (customerList.length && !loading) {
     return (
       <>
         <Header handleSearchInput={handleSearchInput} />

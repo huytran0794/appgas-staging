@@ -11,11 +11,12 @@ import CustomNotification from "../../core/Components/Notification/CustomNotific
 import { LOCAL_SERVICE } from "../../core/services/localServ";
 
 import { checkAllInfo } from "../../core/utils/checkLogin";
-
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../core/redux/slice/spinnerSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (LOCAL_SERVICE.user.get()) {
       navigate("/");
@@ -23,6 +24,7 @@ const LoginPage = () => {
   }, []);
 
   const handleFinish = (values, buttonRef) => {
+    dispatch(spinnerActions.setLoadingOn());
     checkAllInfo(values)
       .then((res) => {
         if (!Object.keys(res).length) {
@@ -36,14 +38,19 @@ const LoginPage = () => {
         buttonRef.current.disabled = true;
 
         return res;
-      }).then((res) => {
-        CustomNotification("success", "Login ok", "Please wait a minute");
+      })
+      .then((res) => {
+        setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          CustomNotification("success", "Login ok", "Please wait a minute");
+        }, 2000);
+
         setTimeout(() => {
           navigate("/");
-          if(res.hasOwnProperty('tasks')) {
+          if (res.hasOwnProperty("tasks")) {
             LOCAL_SERVICE.user.set(res, res.role);
           } else {
-            LOCAL_SERVICE.user.set({...res, 'tasks': []}, res.role);
+            LOCAL_SERVICE.user.set({ ...res, tasks: [] }, res.role);
           }
         }, 2500);
       })
