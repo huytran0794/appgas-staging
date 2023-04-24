@@ -18,13 +18,18 @@ const EditCustomerForm = ({
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
   const handleFinish = (values) => {
+    values.map = mapStringSplice(values.map);
     let { id, ...customerData } = customerInfo;
     CUSTOMER_SERVICE_FIREBASE.updateCustomer(customerInfo.id, {
       ...customerData,
       ...values,
     })
       .then((res) => {
-        CustomNotification("success", "Update customer ok", "Please wait a minute");
+        CustomNotification(
+          "success",
+          "Update customer ok",
+          "Please wait a minute"
+        );
         setTimeout(() => {
           navigate("/manager");
           dispatch(userActions.setUserProfile(values));

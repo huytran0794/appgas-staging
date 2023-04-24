@@ -16,18 +16,8 @@ const isValidCoordinate = (coordinateString) => {
   return pattern.test(coordinateString);
 };
 
-const getMobileOS = () => {
-  const ua = navigator.userAgent;
-  console.log("ua", ua);
-  if (/android/i.test(ua)) {
-    return "Android";
-  } else if (
-    /iPad|iPhone|iPod/.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  ) {
-    return "iOS";
-  }
-  return "Other";
+const mapStringSplice = (str) => {
+  return str.split("").slice(1, -1).join("");
 };
 
-export { isValidUrl, isValidCoordinate, getMobileOS };
+export { isValidUrl, isValidCoordinate, mapStringSplice };

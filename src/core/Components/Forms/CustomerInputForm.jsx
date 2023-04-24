@@ -8,7 +8,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import { sendMailWithTasks } from "../Email/sendMail";
-import { getMobileOS } from "../../utils/utils";
+import { getMobileOS, mapStringSplice } from "../../utils/utils";
 
 const { Option } = Select;
 
@@ -60,7 +60,7 @@ const CustomerInputForm = ({
         fullname: customerList[customerIdx].fullname,
         email: customerList[customerIdx].email,
         sdt: customerList[customerIdx].sdt,
-        map: customerList[customerIdx].map,
+        map: mapStringSplice(customerList[customerIdx].map),
         address: customerList[customerIdx].address,
         order: values.order.trim() || "",
         note: values.note || "",
