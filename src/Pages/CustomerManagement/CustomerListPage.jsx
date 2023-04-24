@@ -63,7 +63,7 @@ const CustomerListPage = () => {
       .then((url) => {
         let templateParams = {
           from_name: "system",
-          message: `Link download: ${url}`,
+          message: `<p>Link download: <a href="${url}" download>Link</a></p>`,
           // to_email: LOCAL_SERVICE.user.get().email,
           to_email: "kuum94@gmail.com",
         };
