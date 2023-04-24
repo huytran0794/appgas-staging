@@ -11,13 +11,18 @@ import CustomerOrderHistory from "./CustomerOrderHistory";
 import avatar from "../../../core/assets/images/avatar.svg";
 import { isValidUrl } from "../../../core/utils/utils";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const CustomerDetail = () => {
   const { id } = useParams();
-
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   let [customerInfo, setCustomerInfo] = useState({});
 
   useEffect(() => {
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     let returnedData = {};
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(id)
       .then((snapshot) => {
@@ -32,7 +37,16 @@ const CustomerDetail = () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        console.log("running trong finally");
+        timeOutId = setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
       });
+
+    return () => clearTimeout(timeOutId);
   }, []);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";
