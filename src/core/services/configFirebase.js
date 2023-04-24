@@ -15,7 +15,8 @@ const firebaseConfig = {
   appId: "1:1010726195000:web:46e05f9cf517d885c9bbcd",
 };
 
-const VAPID_KEY = "BNhxVWbprb1fOZRLS6SXQjNM6KLpFkS-D-bAWZZ7yer4oFahluognS5yNv7b8SuTUxVzkbv52vRjUJ98B5q4fb4";
+const VAPID_KEY =
+  "BNhxVWbprb1fOZRLS6SXQjNM6KLpFkS-D-bAWZZ7yer4oFahluognS5yNv7b8SuTUxVzkbv52vRjUJ98B5q4fb4";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -30,14 +31,4 @@ const generateDbRef = (tablePath = "", ...args) => {
   return ref(database);
 };
 
-
-
-const messaging = getMessaging();
-
-const requestForToken = async () => {
-  return await getToken(messaging, { vapidKey: VAPID_KEY })
-};
-
-
-
-export { app, storage, database, generateDbRef, firebaseConfig, requestForToken };
+export { app, storage, database, generateDbRef, firebaseConfig };
