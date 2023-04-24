@@ -64,12 +64,17 @@ const CustomerListPage = () => {
         let templateParams = {
           from_name: "system",
           message: `Link download: ${url}`,
-          to_email: LOCAL_SERVICE.user.get().email,
+          // to_email: LOCAL_SERVICE.user.get().email,
+          to_email: "kuum94@gmail.com",
         };
         return sendMailWithFile(templateParams);
       })
       .then((result) => {
-        CustomNotification("success", "Email is sent", "Please check your inbox");
+        CustomNotification(
+          "success",
+          "Email is sent",
+          "Please check your inbox"
+        );
         console.log("result");
         console.log(result.text);
       })
