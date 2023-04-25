@@ -91,8 +91,8 @@ const CustomerInputForm = ({
               >
                 Open my app
               </a>`,
-            // to_email: userInfo.email,
-            to_email: "kuum94@gmail.com",
+            to_email: userInfo.email,
+            // to_email: "kuum94@gmail.com",
           };
 
           return sendMailWithTasks(templateParams);
