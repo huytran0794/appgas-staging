@@ -24,7 +24,10 @@ const PrivateRoutes = () => {
             className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold text-sm transition-all duration-[400ms] rounded-md outline-none border-none"
             onClick={() => {
               notification.destroy(notiKey);
-              navigate(
+              // navigate(
+              //   `/user/task-tracking/detail/${dataSnap[dataSnap.length - 1].id}`
+              // );
+              window.location.replace(
                 `/user/task-tracking/detail/${dataSnap[dataSnap.length - 1].id}`
               );
             }}

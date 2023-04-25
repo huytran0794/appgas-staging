@@ -23,6 +23,7 @@ const CustomerInputForm = ({
   const [form] = Form.useForm();
   const [customerList, setCustomerList] = useState([]);
   const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,6 +75,7 @@ const CustomerInputForm = ({
       userInfo.tasks = [...userInfo.tasks, taskData];
       let { id, ...userData } = userInfo;
       buttonRef.current.disabled = true;
+      buttonCancelRef.current.disabled = true;
       USER_SERVICE_FIREBASE.updateUser(id, { ...userData })
         .then(() => {
           let templateParams = {
@@ -108,7 +110,6 @@ const CustomerInputForm = ({
                 "",
                 Date.now()
               );
-              buttonRef.current.disabled = false;
             }, 1000);
             setTimeout(() => {
               navigate("/admin/user/task-management");
@@ -128,6 +129,8 @@ const CustomerInputForm = ({
           }
         })
         .catch((error) => {
+          buttonRef.current.disabled = false;
+          buttonCancelRef.current.disabled = false;
           console.log(error);
         });
     } else {
@@ -227,6 +230,7 @@ const CustomerInputForm = ({
           onClick={() => {
             navigate("/");
           }}
+          ref={buttonCancelRef}
         >
           Cancel
         </Button>

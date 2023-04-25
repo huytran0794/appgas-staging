@@ -13,6 +13,9 @@ const AddCustomerPage = ({ customerInfo }) => {
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+
+
+
   useEffect(() => {
     let timeOutId;
     dispatch(spinnerActions.setLoadingOn());

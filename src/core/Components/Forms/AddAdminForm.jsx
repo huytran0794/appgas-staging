@@ -7,13 +7,15 @@ import { LOCAL_SERVICE } from "../../services/localServ";
 import CustomNotification from "../Notification/CustomNotification";
 import { useDispatch } from "react-redux";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useRef } from "react";
 
 const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [adminId, setAdminId] = useState();
   const dispatch = useDispatch();
-
+  const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
   useEffect(() => {
     if (LOCAL_SERVICE.user.getRole() !== "master") {
       navigate("/");
@@ -39,6 +41,8 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
     </Label>
   );
   const handleFinish = (values) => {
+    buttonRef.current.disabled = true;
+    buttonCancelRef.current.disabled = true;
     dispatch(spinnerActions.setLoadingOn());
     MASTER_SERVICE_FIREBASE.addAdminInfo(adminId, values)
       .then(() => {
@@ -59,6 +63,9 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
       })
       .catch((error) => {
         console.log(error);
+
+        buttonRef.current.disabled = false;
+        buttonCancelRef.current.disabled = false;
       });
   };
 

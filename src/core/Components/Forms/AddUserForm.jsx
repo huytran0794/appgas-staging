@@ -6,10 +6,13 @@ import { useNavigate } from "react-router-dom";
 import CustomNotification from "../Notification/CustomNotification";
 import { useDispatch } from "react-redux";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useRef } from "react";
 
 const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
+  const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
   const labelItem = (labelText) => (
     <Label className="text-sm font-medium text-[#67748e] capitalize">
       {labelText}
@@ -37,6 +40,8 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
   }, []);
 
   const handleFinish = (values) => {
+    buttonRef.current.disabled = true;
+    buttonCancelRef.current.disabled = true;
     dispatch(spinnerActions.setLoadingOn());
     values = { ...values, tasks: [] };
     USER_SERVICE_FIREBASE.addUser(userId, values)
@@ -58,6 +63,9 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
       .catch((error) => {
         console.log("error");
         console.log(error);
+
+        buttonRef.current.disabled = false;
+        buttonCancelRef.current.disabled = false;
       });
   };
 
@@ -125,12 +133,14 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
             type="primary"
             htmlType="submit"
             className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold text-sm transition-all duration-[400ms] rounded-md outline-none border-none"
+            ref={buttonRef}
           >
             Add new
           </Button>
           <Button
             htmlType="button"
             className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] text-white text-sm transition-all duration-[400ms] ml-3 rounded-md outline-none border-none"
+            ref={buttonCancelRef}
             onClick={() => {
               navigate("/");
             }}

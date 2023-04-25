@@ -7,6 +7,7 @@ import TextArea from "antd/es/input/TextArea";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
 import { useDispatch } from "react-redux";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useRef } from "react";
 const AddCustomerForm = ({
   layout = "vertical",
   size = "large",
@@ -17,6 +18,10 @@ const AddCustomerForm = ({
   const initialValues = { ...customerInfo };
   const [customerId, setCustomerId] = useState("");
   const dispatch = useDispatch();
+
+  const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
+
   useEffect(() => {
     CUSTOMER_SERVICE_FIREBASE.getLastDataRef("/customers")
       .then((snapshot) => {
@@ -33,6 +38,8 @@ const AddCustomerForm = ({
   }, []);
 
   const handleFinish = (values) => {
+    buttonRef.current.disabled = true;
+    buttonCancelRef.current.disabled = true;
     values = { ...values, order_history: [] };
     let timeOutId;
     dispatch(spinnerActions.setLoadingOn());
@@ -60,6 +67,9 @@ const AddCustomerForm = ({
       .catch((error) => {
         console.log("error");
         console.log(error);
+
+        buttonRef.current.disabled = false;
+        buttonCancelRef.current.disabled = false;
       });
   };
   const labelItem = (labelText) => (
@@ -143,12 +153,14 @@ const AddCustomerForm = ({
             type="primary"
             htmlType="submit"
             className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold text-sm transition-all duration-[400ms] rounded-md outline-none border-none"
+            ref={buttonRef}
           >
             Add new
           </Button>
           <Button
             htmlType="button"
             className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] text-white text-sm transition-all duration-[400ms] ml-3 rounded-md outline-none border-none"
+            ref={buttonCancelRef}
             onClick={() => {
               navigate("/");
             }}

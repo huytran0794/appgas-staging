@@ -10,6 +10,7 @@ import CustomNotification from "../Notification/CustomNotification";
 import { mapStringSplice } from "../../utils/utils";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
 import { useState } from "react";
+import { useRef } from "react";
 
 const EditCustomerForm = ({
   layout = "vertical",
@@ -20,12 +21,16 @@ const EditCustomerForm = ({
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
-  const [loading, setLoading] = useState(true);
+
+  const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
 
   const handleFinish = (values) => {
+    buttonRef.current.disabled = true;
+    buttonCancelRef.current.disabled = true;
     values.map = mapStringSplice(values.map);
     let { id, ...customerData } = customerInfo;
-    let timeOutId;
+
     dispatch(spinnerActions.setLoadingOn());
     CUSTOMER_SERVICE_FIREBASE.updateCustomer(customerInfo.id, {
       ...customerData,
@@ -33,9 +38,8 @@ const EditCustomerForm = ({
     })
       .then((res) => {
         setTimeout(() => {
-          timeOutId = setTimeout(() => {
+          setTimeout(() => {
             dispatch(spinnerActions.setLoadingOff());
-            setLoading(false);
           }, 2000);
           CustomNotification(
             "success",
@@ -52,6 +56,8 @@ const EditCustomerForm = ({
         }, 2500);
       })
       .catch((error) => {
+        buttonRef.current.disabled = false;
+        buttonCancelRef.current.disabled = false;
         console.log(error);
       });
   };
@@ -151,12 +157,14 @@ const EditCustomerForm = ({
           type="primary"
           htmlType="submit"
           className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold text-sm transition-all duration-[400ms] rounded-md outline-none border-none"
+          ref={buttonRef}
         >
           Update
         </Button>
         <Button
           htmlType="button"
           className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] text-white text-sm transition-all duration-[400ms] ml-3 rounded-md outline-none border-none"
+          ref={buttonCancelRef}
           onClick={() => {
             navigate("/manager");
           }}

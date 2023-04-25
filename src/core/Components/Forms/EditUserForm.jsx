@@ -7,6 +7,7 @@ import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import CustomNotification from "../Notification/CustomNotification";
 import { useDispatch } from "react-redux";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useRef } from "react";
 
 const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const navigate = useNavigate();
@@ -14,8 +15,12 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const initialValues = { ...userInfo };
 
   const dispatch = useDispatch();
+  const buttonRef = useRef(null);
+  const buttonCancelRef = useRef(null);
 
   const handleFinish = (values) => {
+    buttonRef.current.disabled = true;
+    buttonCancelRef.current.disabled = true;
     dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.updateUser(userInfo.id, {
       ...userInfo,
@@ -39,6 +44,9 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
       })
       .catch((error) => {
         console.log(error);
+
+        buttonRef.current.disabled = false;
+        buttonCancelRef.current.disabled = false;
       });
   };
   const handleFinishFailed = () => {};

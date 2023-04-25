@@ -10,6 +10,7 @@ import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 
 import { isValidCoordinate } from "../../utils/utils";
+import { useRef } from "react";
 
 const TaskDetailForm = ({
   layout = "vertical",
@@ -23,6 +24,8 @@ const TaskDetailForm = ({
   let initialValues = { ...taskInfo, specialNote: "" };
 
   const [customerInfo, setCustomerInfo] = useState({});
+  const buttonFinishRef = useRef(null);
+  const buttonCancelRef = useRef(null);
 
   useEffect(() => {
     let returnedData = {};
@@ -40,6 +43,7 @@ const TaskDetailForm = ({
   }, []);
 
   const handleFinish = (values) => {
+    buttonFinishRef.current.disabled = true;
     let completeDateTime = new Date();
     const options = {
       year: "numeric",
@@ -92,12 +96,14 @@ const TaskDetailForm = ({
           }, 1000);
         })
         .catch((err) => {
+          buttonFinishRef.current.disabled = false;
           console.log(err);
         });
     }
   };
 
   const handleCancelTask = () => {
+    buttonCancelRef.current.disabled = true;
     console.log("task info local");
     console.log(taskInfo.id);
     console.log("user info tasks");
@@ -124,6 +130,7 @@ const TaskDetailForm = ({
       })
       .catch((err) => {
         console.log(err);
+        buttonCancelRef.current.disabled = false;
       });
   };
 
@@ -191,6 +198,7 @@ const TaskDetailForm = ({
             type="primary"
             htmlType="submit"
             className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white rounded-[4px] font-semibold text-sm transition-all duration-[400ms]"
+            ref={buttonFinishRef}
           >
             Complete
           </Button>
@@ -198,6 +206,7 @@ const TaskDetailForm = ({
             htmlType="button"
             className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] rounded-[4px] text-white text-sm transition-all duration-[400ms] ml-3"
             onClick={() => handleCancelTask()}
+            ref={buttonCancelRef}
           >
             Cancel
           </Button>
