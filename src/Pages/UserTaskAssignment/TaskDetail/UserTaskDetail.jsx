@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "../../../core/Components/Header/Header";
 import TaskDetailForm from "../../../core/Components/Forms/TaskDetailForm";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
 import { LOCAL_SERVICE } from "../../../core/services/localServ";
@@ -18,35 +18,42 @@ const UserTaskDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
   useEffect(() => {
     let timeOutId;
     dispatch(spinnerActions.setLoadingOn());
-    USER_SERVICE_FIREBASE.getSingleUserInfo(userInfo.id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          if (snapshot.val().hasOwnProperty("tasks")) {
-            userInfo.tasks = [...snapshot.val().tasks];
-            let taskIdx = snapshot
-              .val()
-              .tasks.findIndex((task) => task.id === id);
-            if (taskIdx > -1) {
-              setTaskInfo({ ...snapshot.val().tasks[taskIdx] });
+    if (userInfo.role !== "user") {
+      navigate("/");
+    } else {
+      USER_SERVICE_FIREBASE.getSingleUserInfo(userInfo.id)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            if (snapshot.val().hasOwnProperty("tasks")) {
+              userInfo.tasks = [...snapshot.val().tasks];
+              LOCAL_SERVICE.user.set(userInfo, userInfo.role);
+              let taskIdx = snapshot
+                .val()
+                .tasks.findIndex((task) => task.id === id);
+              if (taskIdx > -1) {
+                setTaskInfo({ ...snapshot.val().tasks[taskIdx] });
+              }
+            } else {
+              userInfo.tasks = [];
             }
-          } else {
-            userInfo.tasks = [];
           }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("running trong finally usetaskdetail");
-        timeOutId = setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          console.log("running trong finally usetaskdetail");
+          timeOutId = setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+            setLoading(false);
+          }, 2000);
+        });
+    }
 
     return () => clearTimeout(timeOutId);
   }, [location.pathname, id]);

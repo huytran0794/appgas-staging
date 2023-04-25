@@ -8,12 +8,19 @@ import { useLocation } from "react-router-dom";
 
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 function Header({ handleSearchInput }) {
   let searchRef = useRef(null);
   let navigate = useNavigate();
   let location = useLocation();
 
+  let userInfo = useSelector((state) => {
+    console.log("state");
+    console.log(state.userReducer.userInfo);
+
+    return state.userReducer.userInfo;
+  });
   let handleDebounce = (e, searchRef) => {
     let value = e.target.value;
     if (searchRef.current) {
@@ -28,9 +35,8 @@ function Header({ handleSearchInput }) {
   let handleLogout = () => {
     // remove token from local storage
     LOCAL_SERVICE.user.unset();
-    LOCAL_SERVICE.appToken.unset();
-
-    navigate("/login");
+    // navigate("/login");
+    window.location.href = "/login";
   };
 
   let handleAddAdmin = () => {
@@ -40,18 +46,22 @@ function Header({ handleSearchInput }) {
   let renderUserName = () => {
     let name = "";
     if (LOCAL_SERVICE.user.getRole() === "user") {
-      name = LOCAL_SERVICE.user.get().username;
+      name = userInfo.username;
     }
 
     if (LOCAL_SERVICE.user.getRole() === "admin") {
-      name = LOCAL_SERVICE.user.get().fullname;
+      name = userInfo.fullname;
     }
 
     if (LOCAL_SERVICE.user.getRole() === "master") {
-      name = LOCAL_SERVICE.user.get().fullname;
+      name = userInfo.fullname;
     }
 
-    return <p className="username mb-0">{name}</p>;
+    return (
+      <p className="username mb-0">
+        {userInfo.role === "user" ? userInfo.username : userInfo.fullname}
+      </p>
+    );
   };
 
   let renderAddAdmin = () => {
@@ -76,7 +86,7 @@ function Header({ handleSearchInput }) {
     return (
       <div className="profile-action min-w-[17px]">
         <div className="view-profile cursor-pointer hover:bg-slate-200/50 transition-all duration-700 py-4 px-2 flex gap-2 items-center rounded-md">
-          <div className="capitalize flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <div className="avatar user-avatar">
               <Avatar
                 size={30}

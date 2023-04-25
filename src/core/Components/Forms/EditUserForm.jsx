@@ -32,7 +32,7 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
         }, 2000);
 
         setTimeout(() => {
-          navigate("admin/user-management");
+          navigate("/admin/user-management");
         }, 4000);
       })
       .catch((error) => {

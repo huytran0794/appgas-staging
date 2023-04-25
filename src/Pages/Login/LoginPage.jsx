@@ -14,6 +14,7 @@ import { checkAllInfo } from "../../core/utils/checkLogin";
 import { useDispatch } from "react-redux";
 import { spinnerActions } from "../../core/redux/slice/spinnerSlice";
 import { useState } from "react";
+import { userActions } from "../../core/redux/slice/userSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -65,8 +66,12 @@ const LoginPage = () => {
           navigate("/");
           if (res.hasOwnProperty("tasks")) {
             LOCAL_SERVICE.user.set(res, res.role);
+            dispatch(userActions.setUserProfile(res, res.role));
           } else {
             LOCAL_SERVICE.user.set({ ...res, tasks: [] }, res.role);
+            dispatch(
+              userActions.setUserProfile({ ...res, tasks: [] }, res.role)
+            );
           }
         }, 4500);
       })

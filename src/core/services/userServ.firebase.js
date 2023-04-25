@@ -39,21 +39,25 @@ const USER_SERVICE_FIREBASE = {
   },
 
   assignTask: (userId, hasTask, callbackFunc) => {
-    console.log('hastask');
+    console.log("hastask");
     console.log(hasTask);
-    if(hasTask) {
-      console.log('child changed on has task')
+    if (hasTask) {
+      console.log("child changed on has task");
       onChildChanged(generateDbRef(`/users/${userId}`), (snapshot) => {
-        callbackFunc(snapshot)
+        callbackFunc(snapshot);
       });
     }
 
-    if(!hasTask) {
-      console.log('child added to has no task')
+    if (!hasTask) {
+      console.log("child added to has no task");
       onChildAdded(generateDbRef(`/users/${userId}`), (snapshot) => {
-        callbackFunc(snapshot)
+        callbackFunc(snapshot);
       });
     }
+  },
+
+  deleteTask: (taskId) => {
+    return generateDbRef();
   },
 
   deleteUser: (userId) => {

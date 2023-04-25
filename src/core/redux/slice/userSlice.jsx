@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { LOCAL_SERVICE } from "../../services/localServ";
 
 const initialState = {
-  userInfo: {},
+  userInfo: LOCAL_SERVICE.user.get() || {},
+  taskNoti: "",
 };
 
 const userSlice = createSlice({
@@ -9,7 +11,13 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUserProfile: (state, action) => {
-      state.userInfo = action.payload;
+      state.userInfo = { ...action.payload };
+    },
+    cancelTask: (state) => {
+      state.taskNoti = "cancel";
+    },
+    assignTask: (state) => {
+      state.taskNoti = "assign";
     },
   },
 });

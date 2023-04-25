@@ -95,6 +95,54 @@ const TaskDetailForm = ({
     }
   };
 
+  const handleCancelTask = () => {
+    console.log("task info local");
+    console.log(taskInfo.id);
+    console.log("user info tasks");
+    console.log(userInfo.tasks);
+
+    console.log("loc task");
+    let newUserTasks = userInfo.tasks.filter((task) => task.id !== taskInfo.id);
+    console.log(newUserTasks);
+    userInfo.tasks = [...newUserTasks];
+
+    let { id, ...newUserData } = userInfo;
+    USER_SERVICE_FIREBASE.updateUser(id, newUserData)
+      .then(() => {
+        CustomNotification(
+          "success",
+          `Delete task`,
+          `Task ${taskInfo.id} is deleted`
+        );
+        setTimeout(() => {
+          navigate("/user/task-tracking");
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // Promise.all([
+    //   CUSTOMER_SERVICE_FIREBASE.updateCustomer(
+    //     taskInfo.customer_id,
+    //     newCustomerData
+    //   ),
+    //   USER_SERVICE_FIREBASE.updateUser(userInfo.id, newUserData),
+    // ])
+    //   .then(() => {
+    //     CustomNotification(
+    //       "success",
+    //       `Complete`,
+    //       `Task ${taskInfo.id} completed`
+    //     );
+    //     setTimeout(() => {
+    //       navigate("/user/task-tracking");
+    //     }, 1000);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
   const labelItem = (labelText) => (
     <Label className="text-sm font-medium text-[#67748e] capitalize">
       {labelText}
@@ -165,9 +213,7 @@ const TaskDetailForm = ({
           <Button
             htmlType="button"
             className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] rounded-[4px] text-white text-sm transition-all duration-[400ms] ml-3"
-            onClick={() => {
-              navigate("/user/task-tracking/");
-            }}
+            onClick={() => handleCancelTask()}
           >
             Cancel
           </Button>

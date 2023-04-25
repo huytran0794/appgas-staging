@@ -11,6 +11,7 @@ const CustomNotification = (
     message: message,
     description: desc,
   };
+
   if (btn) {
     returnedConfig = { ...returnedConfig, btn };
   }
