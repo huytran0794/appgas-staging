@@ -5,6 +5,7 @@ const CustomNotification = (
   message = "",
   desc = "",
   btn = null,
+  key = "",
   duration = 4.5
 ) => {
   let returnedConfig = {
@@ -20,7 +21,20 @@ const CustomNotification = (
     returnedConfig = { ...returnedConfig, duration };
   }
 
-  return notification[type](returnedConfig);
+  let notikey = Date.now();
+  if (key) {
+    notikey = key;
+  }
+
+  returnedConfig = {
+    ...returnedConfig,
+    key: notikey,
+    onClose: () => notification.destroy(key),
+  };
+
+  notification[type](returnedConfig);
+
+  return returnedConfig;
 };
 
 export default CustomNotification;

@@ -46,7 +46,9 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
           CustomNotification(
             "success",
             "Add new admin ok",
-            "Please wait a minute"
+            "Please wait a minute",
+            "",
+            Date.now()
           );
           dispatch(spinnerActions.setLoadingOff());
         }, 2000);

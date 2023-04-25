@@ -27,7 +27,9 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
           CustomNotification(
             "success",
             "Update customer ok",
-            "Please wait a minute"
+            "Please wait a minute",
+            "",
+            Date.now()
           );
         }, 2000);
 

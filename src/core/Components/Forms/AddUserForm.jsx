@@ -56,7 +56,13 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
     //   });
     USER_SERVICE_FIREBASE.addUser(userId, values)
       .then(() => {
-        CustomNotification("success", "Add new user ok", "Please wait a minute");
+        CustomNotification(
+          "success",
+          "Add new user ok",
+          "Please wait a minute",
+          "",
+          Date.now()
+        );
         setTimeout(() => {
           navigate("/admin/user-management");
         }, 1200);

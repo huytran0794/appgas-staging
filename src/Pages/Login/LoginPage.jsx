@@ -47,7 +47,9 @@ const LoginPage = () => {
             CustomNotification(
               "error",
               "Login fails",
-              "Please check your login info again"
+              "Please check your login info again",
+              "",
+              Date.now()
             );
             buttonRef.current.disabled = false;
           }, 2000);
@@ -59,7 +61,13 @@ const LoginPage = () => {
       .then((res) => {
         setTimeout(() => {
           dispatch(spinnerActions.setLoadingOff());
-          CustomNotification("success", "Login ok", "Please wait a minute");
+          CustomNotification(
+            "success",
+            "Login ok",
+            "Please wait a minute",
+            "",
+            Date.now()
+          );
         }, 2000);
 
         setTimeout(() => {

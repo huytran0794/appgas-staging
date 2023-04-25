@@ -32,12 +32,18 @@ const AddCustomerForm = ({
 
   const handleFinish = (values) => {
     values = { ...values, order_history: [] };
-    if(!values.note) {
+    if (!values.note) {
       values.note = "";
     }
     CUSTOMER_SERVICE_FIREBASE.addCustomer(customerId, values)
       .then(() => {
-        CustomNotification("success", "Add new customer ok", "Please wait a minute");
+        CustomNotification(
+          "success",
+          "Add new customer ok",
+          "Please wait a minute",
+          "",
+          Date.now()
+        );
         setTimeout(() => {
           navigate("/");
         }, 1000);

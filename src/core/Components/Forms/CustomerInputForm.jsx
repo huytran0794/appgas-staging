@@ -104,7 +104,9 @@ const CustomerInputForm = ({
               CustomNotification(
                 "success",
                 "Assign task for user ok",
-                "Please wait a minute"
+                "Please wait a minute",
+                "",
+                Date.now()
               );
               buttonRef.current.disabled = false;
             }, 1000);
@@ -117,7 +119,9 @@ const CustomerInputForm = ({
               CustomNotification(
                 "error",
                 "Something went wrong !!",
-                "Please check your email again!!"
+                "Please check your email again!!",
+                "",
+                Date.now()
               );
               throw new Error("Fail");
             }, 1000);
@@ -127,7 +131,12 @@ const CustomerInputForm = ({
           console.log(error);
         });
     } else {
-      CustomNotification("error", "Customer phone number does not exist", "");
+      CustomNotification(
+        "error",
+        "Customer phone number does not exist",
+        "",
+        Date.now()
+      );
     }
   };
   const handleFinishFailed = (errorInfo) => {

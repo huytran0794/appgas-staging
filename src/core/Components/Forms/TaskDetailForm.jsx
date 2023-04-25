@@ -83,7 +83,9 @@ const TaskDetailForm = ({
           CustomNotification(
             "success",
             `Complete`,
-            `Task ${taskInfo.id} completed`
+            `Task ${taskInfo.id} completed`,
+            "",
+            Date.now()
           );
           setTimeout(() => {
             navigate("/user/task-tracking");
@@ -112,7 +114,9 @@ const TaskDetailForm = ({
         CustomNotification(
           "success",
           `Delete task`,
-          `Task ${taskInfo.id} is deleted`
+          `Task ${taskInfo.id} is deleted`,
+          "",
+          Date.now()
         );
         setTimeout(() => {
           navigate("/user/task-tracking");
@@ -121,26 +125,6 @@ const TaskDetailForm = ({
       .catch((err) => {
         console.log(err);
       });
-    // Promise.all([
-    //   CUSTOMER_SERVICE_FIREBASE.updateCustomer(
-    //     taskInfo.customer_id,
-    //     newCustomerData
-    //   ),
-    //   USER_SERVICE_FIREBASE.updateUser(userInfo.id, newUserData),
-    // ])
-    //   .then(() => {
-    //     CustomNotification(
-    //       "success",
-    //       `Complete`,
-    //       `Task ${taskInfo.id} completed`
-    //     );
-    //     setTimeout(() => {
-    //       navigate("/user/task-tracking");
-    //     }, 1000);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   const labelItem = (labelText) => (

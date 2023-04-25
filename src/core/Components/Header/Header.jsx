@@ -44,19 +44,6 @@ function Header({ handleSearchInput }) {
   };
 
   let renderUserName = () => {
-    let name = "";
-    if (LOCAL_SERVICE.user.getRole() === "user") {
-      name = userInfo.username;
-    }
-
-    if (LOCAL_SERVICE.user.getRole() === "admin") {
-      name = userInfo.fullname;
-    }
-
-    if (LOCAL_SERVICE.user.getRole() === "master") {
-      name = userInfo.fullname;
-    }
-
     return (
       <p className="username mb-0">
         {userInfo.role === "user" ? userInfo.username : userInfo.fullname}

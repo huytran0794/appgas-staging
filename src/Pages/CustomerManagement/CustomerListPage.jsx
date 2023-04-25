@@ -71,7 +71,13 @@ const CustomerListPage = () => {
     const fileRef = ref(storage, `files/${fileName}_${currentDate}.xlsx`);
     uploadBytes(fileRef, fileBlobData)
       .then((snapshot) => {
-        CustomNotification("info", "Exporting data", "Please wait a minute");
+        CustomNotification(
+          "info",
+          "Exporting data",
+          "Please wait a minute",
+          "",
+          Date.now()
+        );
         return getDownloadURL(fileRef);
       })
       .then((url) => {
@@ -91,11 +97,19 @@ const CustomerListPage = () => {
         CustomNotification(
           "success",
           "Email is sent",
-          "Please check your inbox"
+          "Please check your inbox",
+          "",
+          Date.now()
         );
       })
       .catch((error) => {
-        CustomNotification("error", "Error", "Something went wrong");
+        CustomNotification(
+          "error",
+          "Error",
+          "Something went wrong",
+          "",
+          Date.now()
+        );
         console.log(error);
       });
   };

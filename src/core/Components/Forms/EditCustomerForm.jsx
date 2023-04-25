@@ -29,7 +29,9 @@ const EditCustomerForm = ({
         CustomNotification(
           "success",
           "Update customer ok",
-          "Please wait a minute"
+          "Please wait a minute",
+          "",
+          Date.now()
         );
         setTimeout(() => {
           navigate("/manager");
