@@ -23,7 +23,7 @@ export default function Spinner() {
         "transition-all duration-[1200ms]"
       )}
     >
-      <Spin indicator={antIcon} />;
+      <Spin indicator={antIcon} />
     </div>
   );
 }

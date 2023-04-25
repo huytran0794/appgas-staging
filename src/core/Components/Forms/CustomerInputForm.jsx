@@ -81,7 +81,7 @@ const CustomerInputForm = ({
             from_name: "system",
             message: `
               Khách hàng: ${taskData.fullname},
-              SDT: ${taskData.sdt},
+              SĐT: ${taskData.sdt},
               Địa chỉ: ${taskData.address},
               Google map: ${taskData.map},
             `,

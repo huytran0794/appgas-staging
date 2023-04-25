@@ -17,7 +17,19 @@ const isValidCoordinate = (coordinateString) => {
 };
 
 const mapStringSplice = (str) => {
-  return str.split("").slice(1, -1).join("");
+  let strSplitted = str.split("");
+  console.log("strSplit 1 and last char");
+  console.log(strSplitted.slice(1, 1));
+  console.log(strSplitted.slice(-1, 1));
+  console.log(strSplitted);
+  console.log(strSplitted[0]);
+  console.log(strSplitted[strSplitted.length - 1]);
+
+  if (strSplitted[0] === "(" && strSplitted[strSplitted.length - 1] === ")") {
+    return str.split("").slice(1, -1).join("");
+  }
+
+  return str;
 };
 
 export { isValidUrl, isValidCoordinate, mapStringSplice };

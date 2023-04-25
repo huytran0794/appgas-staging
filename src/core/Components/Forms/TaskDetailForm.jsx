@@ -9,7 +9,7 @@ import CustomNotification from "../Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 
-import {isValidCoordinate} from "../../utils/utils";
+import { isValidCoordinate } from "../../utils/utils";
 
 const TaskDetailForm = ({
   layout = "vertical",
@@ -80,7 +80,11 @@ const TaskDetailForm = ({
         USER_SERVICE_FIREBASE.updateUser(userInfo.id, newUserData),
       ])
         .then(() => {
-          CustomNotification("success", `Complete`, `Task ${taskInfo.id} completed`);
+          CustomNotification(
+            "success",
+            `Complete`,
+            `Task ${taskInfo.id} completed`
+          );
           setTimeout(() => {
             navigate("/user/task-tracking");
           }, 1000);
@@ -100,13 +104,12 @@ const TaskDetailForm = ({
     let mapCoordinate = initialValues.map.split(",");
     let latitude = "";
     let longtitude = "";
-    let mapUrl = "";
+    let mapUrl = "#";
     if (mapCoordinate.length > 1) {
       latitude = mapCoordinate[0].trim();
       longtitude = mapCoordinate[1].trim();
       mapUrl = `https://www.google.pt/maps/dir//${latitude},${longtitude}/@${latitude},${longtitude},20z`;
     }
-
 
     initialValues.map = mapUrl;
 
@@ -134,7 +137,7 @@ const TaskDetailForm = ({
             <Input placeholder="Google map" disabled />
           </Form.Item>
           <div className="action">
-            <a href={initialValues.map ? initialValues.map: "#"} target="_blank">
+            <a href={initialValues.map} target="_blank">
               <img
                 src="https://templates.envytheme.com/joxi/default/assets/images/icon/maximize.svg"
                 alt="map"

@@ -36,18 +36,22 @@ const LoginPage = () => {
   }, []);
 
   const handleFinish = (values, buttonRef) => {
+    buttonRef.current.disabled = true;
     dispatch(spinnerActions.setLoadingOn());
     checkAllInfo(values)
       .then((res) => {
         if (!Object.keys(res).length) {
-          CustomNotification(
-            "error",
-            "Login fails",
-            "Please check your login info again"
-          );
+          setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+            CustomNotification(
+              "error",
+              "Login fails",
+              "Please check your login info again"
+            );
+            buttonRef.current.disabled = false;
+          }, 2000);
           throw new Error("Fail!!!");
         }
-        buttonRef.current.disabled = true;
 
         return res;
       })
