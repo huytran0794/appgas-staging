@@ -7,13 +7,19 @@ import CustomerInputForm from "../../../../core/Components/Forms/CustomerInputFo
 import SectionWrapper from "../../../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../../../core/Components/Header/Header";
 import USER_SERVICE_FIREBASE from "../../../../core/services/userServ.firebase";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 const UserTaskAssign = () => {
   const { id } = useParams();
 
   let [userInfo, setUserInfo] = useState({});
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     let returnedData = {};
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
@@ -27,7 +33,14 @@ const UserTaskAssign = () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        timeOutId = setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
       });
+    return () => clearTimeout(timeOutId);
   }, []);
   const bgClass = "bg-white rounded-lg p-6 shadow-xl";
   const userProfile = (userInfo) => {
@@ -86,7 +99,7 @@ const UserTaskAssign = () => {
     );
   };
 
-  if (Object.keys(userInfo).length) {
+  if (Object.keys(userInfo).length && !loading) {
     return (
       <>
         <Header />

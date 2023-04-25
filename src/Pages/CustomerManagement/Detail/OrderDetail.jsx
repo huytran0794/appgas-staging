@@ -1,4 +1,4 @@
-import {Space } from "antd";
+import { Space } from "antd";
 import clsx from "clsx";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -42,8 +42,6 @@ const OrderDetail = () => {
     );
   };
   const contentHeader = (order) => {
-    console.log("order in header");
-    console.log(order);
     return (
       <>
         <div className={clsx("content-header", bgClass, "w-full")}>

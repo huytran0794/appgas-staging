@@ -21,11 +21,11 @@ const UserTaskTrackingPage = () => {
         navigate("/");
       }, 2000);
     }
+
     timeOutId = setTimeout(() => {
       dispatch(spinnerActions.setLoadingOff());
       setLoading(false);
     }, 2000);
-
     return () => clearTimeout(timeOutId);
   }, []);
 

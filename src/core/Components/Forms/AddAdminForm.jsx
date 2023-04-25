@@ -5,11 +5,14 @@ import Label from "./Label/Label";
 import MASTER_SERVICE_FIREBASE from "../../services/masterServ.firebase";
 import { LOCAL_SERVICE } from "../../services/localServ";
 import CustomNotification from "../Notification/CustomNotification";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [adminId, setAdminId] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (LOCAL_SERVICE.user.getRole() !== "master") {
@@ -36,12 +39,21 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
     </Label>
   );
   const handleFinish = (values) => {
+    dispatch(spinnerActions.setLoadingOn());
     MASTER_SERVICE_FIREBASE.addAdminInfo(adminId, values)
       .then(() => {
-        CustomNotification("success", "Add new admin ok", "Please wait a minute");
+        setTimeout(() => {
+          CustomNotification(
+            "success",
+            "Add new admin ok",
+            "Please wait a minute"
+          );
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2000);
+
         setTimeout(() => {
           navigate("/");
-        }, 1200);
+        }, 4000);
       })
       .catch((error) => {
         console.log(error);

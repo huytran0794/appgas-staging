@@ -9,13 +9,19 @@ import { isValidUrl } from "../../../core/utils/utils";
 import avatar from "../../../core/assets/images/avatar_2.svg";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
   let [customerInfo, setCustomerInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     let returnedData = {};
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(id)
       .then((snapshot) => {
@@ -31,7 +37,16 @@ const EditCustomerPage = () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        console.log("running trong finally");
+        timeOutId = setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
       });
+
+    return () => clearTimeout(timeOutId);
   }, []);
 
   const renderPage = (customerInfo) => {

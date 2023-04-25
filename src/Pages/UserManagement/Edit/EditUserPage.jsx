@@ -9,6 +9,8 @@ import EditUserForm from "../../../core/Components/Forms/EditUserForm";
 import avatar from "../../../core/assets/images/avatar.svg";
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const EditUserPage = () => {
   const { id } = useParams();
@@ -16,7 +18,12 @@ const EditUserPage = () => {
   let [userInfo, setUserInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -26,7 +33,15 @@ const EditUserPage = () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        timeOutId = setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
       });
+
+    return () => clearTimeout(timeOutId);
   }, []);
 
   const renderPage = (userInfo) => {
@@ -50,7 +65,7 @@ const EditUserPage = () => {
     );
   };
 
-  if (Object.keys(userInfo).length) {
+  if (Object.keys(userInfo).length && !loading) {
     return (
       <>
         <Header />

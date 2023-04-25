@@ -8,11 +8,19 @@ import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapp
 import Header from "../../../core/Components/Header/Header";
 import avatar from "../../../core/assets/images/avatar.svg";
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const UserDetail = () => {
   const { id } = useParams();
   let [userInfo, setUserInfo] = useState({});
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -21,7 +29,15 @@ const UserDetail = () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        timeOutId = setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+          setLoading(false);
+        }, 2000);
       });
+
+    return () => clearTimeout(timeOutId);
   }, []);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";
@@ -102,14 +118,16 @@ const UserDetail = () => {
   };
 
   return (
-    <>
-      <Header />
-      <SectionWrapper
-        sectionClass={"user-detail"}
-        title={"User detail"}
-        content={renderContent(userInfo)}
-      />
-    </>
+    !loading && (
+      <>
+        <Header />
+        <SectionWrapper
+          sectionClass={"user-detail"}
+          title={"User detail"}
+          content={renderContent(userInfo)}
+        />
+      </>
+    )
   );
 };
 

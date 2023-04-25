@@ -5,23 +5,35 @@ import Label from "../../Components/Forms/Label/Label";
 
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import CustomNotification from "../Notification/CustomNotification";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...userInfo };
-  console.log("userinfo");
-  console.log(userInfo);
+
+  const dispatch = useDispatch();
+
   const handleFinish = (values) => {
+    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.updateUser(userInfo.id, {
       ...userInfo,
       ...values,
     })
       .then(() => {
-        CustomNotification("success", "Update customer ok", "Please wait a minute");
         setTimeout(() => {
-          navigate("/");
-        }, 2500);
+          dispatch(spinnerActions.setLoadingOff());
+          CustomNotification(
+            "success",
+            "Update customer ok",
+            "Please wait a minute"
+          );
+        }, 2000);
+
+        setTimeout(() => {
+          navigate("admin/user-management");
+        }, 4000);
       })
       .catch((error) => {
         console.log(error);

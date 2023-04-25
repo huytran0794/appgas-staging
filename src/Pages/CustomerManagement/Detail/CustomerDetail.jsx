@@ -188,14 +188,16 @@ const CustomerDetail = () => {
     return null;
   };
   return (
-    <>
-      <Header />
-      <SectionWrapper
-        sectionClass={"customer-detail"}
-        title={"Customer Details"}
-        content={renderContent(customerInfo)}
-      />
-    </>
+    !loading && (
+      <>
+        <Header />
+        <SectionWrapper
+          sectionClass={"customer-detail"}
+          title={"Customer Details"}
+          content={renderContent(customerInfo)}
+        />
+      </>
+    )
   );
 };
 

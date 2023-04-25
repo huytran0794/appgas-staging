@@ -3,12 +3,14 @@ import TextArea from "antd/es/input/TextArea";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Label from "../../Components/Forms/Label/Label";
-import Notification from "../Notification/CustomNotification";
+import CustomNotification from "../Notification/CustomNotification";
 import { nanoid } from "@reduxjs/toolkit";
 import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import { sendMailWithTasks } from "../Email/sendMail";
-import { getMobileOS, mapStringSplice } from "../../utils/utils";
+import { mapStringSplice } from "../../utils/utils";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const { Option } = Select;
 
@@ -21,6 +23,8 @@ const CustomerInputForm = ({
   const [form] = Form.useForm();
   const [customerList, setCustomerList] = useState([]);
   const buttonRef = useRef(null);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let returnedData = [];
     CUSTOMER_SERVICE_FIREBASE.getCustomerList()
@@ -49,6 +53,7 @@ const CustomerInputForm = ({
   const handleFinish = (values) => {
     console.log("values from form");
     console.log(values);
+    dispatch(spinnerActions.setLoadingOn());
     let customerIdx = customerList.findIndex(
       (customer) => customer.sdt === values.sdt
     );
@@ -94,29 +99,35 @@ const CustomerInputForm = ({
         })
         .then((res) => {
           if (res.status === 200) {
-            Notification(
-              "success",
-              "Assign task for user ok",
-              "Please wait a minute"
-            );
-            buttonRef.current.disabled = false;
+            setTimeout(() => {
+              dispatch(spinnerActions.setLoadingOff());
+              CustomNotification(
+                "success",
+                "Assign task for user ok",
+                "Please wait a minute"
+              );
+              buttonRef.current.disabled = false;
+            }, 1000);
             setTimeout(() => {
               navigate("/admin/user/task-management");
-            }, 1000);
+            }, 3000);
           } else {
-            Notification(
-              "error",
-              "Something went wrong !!",
-              "Please check your email again!!"
-            );
-            throw new Error("Fail");
+            setTimeout(() => {
+              dispatch(spinnerActions.setLoadingOff());
+              CustomNotification(
+                "error",
+                "Something went wrong !!",
+                "Please check your email again!!"
+              );
+              throw new Error("Fail");
+            }, 1000);
           }
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      Notification("error", "Customer phone number does not exist", "");
+      CustomNotification("error", "Customer phone number does not exist", "");
     }
   };
   const handleFinishFailed = (errorInfo) => {

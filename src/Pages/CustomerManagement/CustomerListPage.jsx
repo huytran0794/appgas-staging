@@ -26,6 +26,7 @@ const CustomerListPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(spinnerActions.setLoadingOn());
+    let timeOutId;
     let returnedData = [];
     CUSTOMER_SERVICE_FIREBASE.getCustomerList()
       .then((snapshot) => {
@@ -39,7 +40,7 @@ const CustomerListPage = () => {
               },
             ];
           });
-          setTimeout(() => {
+          timeOutId = setTimeout(() => {
             dispatch(spinnerActions.setLoadingOff());
             setLoading(false);
             setCustomerList(returnedData);
@@ -49,6 +50,8 @@ const CustomerListPage = () => {
       .catch((error) => {
         console.log(error);
       });
+
+    return () => clearTimeout(timeOutId);
   }, []);
 
   let handleSearchInput = (searchTxt) => {
