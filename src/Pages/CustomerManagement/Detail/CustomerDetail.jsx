@@ -54,7 +54,7 @@ const CustomerDetail = () => {
     let mapCoordinate = customerInfo.map.split(",");
     let latitude = "";
     let longtitude = "";
-    let mapUrl = customerInfo.map;
+    let mapUrl = "#";
     if (mapCoordinate.length > 1) {
       latitude = mapCoordinate[0].trim();
       longtitude = mapCoordinate[1].trim();
@@ -106,7 +106,9 @@ const CustomerDetail = () => {
                   </span>
                   <span className="char--special mx-1">:</span>
                   <span className="txt leading-7 inline-block break-words w-full">
-                    <a href={mapUrl}>{mapUrl}</a>
+                    <a href={mapUrl}>
+                      {mapUrl === "#" ? "Invalid google coordinate" : mapUrl}
+                    </a>
                   </span>
                 </li>
                 <li className="mb-3 break-all">

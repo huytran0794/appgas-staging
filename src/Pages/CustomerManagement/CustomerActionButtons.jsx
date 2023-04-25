@@ -104,22 +104,23 @@ const CustomerActionButtons = ({ customerData }) => {
   };
 
   const renderMobileViewButtons = () => {
+    const itemSize = "23px";
     let popOverContent = (
       <Space
-        size={"middle"}
+        size={30}
         align={"center"}
         className="btn-actions justify-center w-full"
       >
         <SlEye
           onClick={() => handleView(customerData)}
           className="cursor-pointer"
-          size={"20px"}
+          size={itemSize}
           color={"#3F80FD"}
         />
         <AiOutlineEdit
           onClick={() => handleEdit(customerData)}
           className="cursor-pointer"
-          size={"20px"}
+          size={itemSize}
           color={"#82D973"}
         />
         {LOCAL_SERVICE.user.getRole() !== "user" && (
@@ -128,7 +129,7 @@ const CustomerActionButtons = ({ customerData }) => {
               handleDeleteCustomer(customerData);
             }}
             className="cursor-pointer"
-            size={"20px"}
+            size={itemSize}
             color={"red"}
           />
         )}

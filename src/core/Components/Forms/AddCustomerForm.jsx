@@ -5,6 +5,8 @@ import Label from "../../../../src/core/Components/Forms/Label/Label";
 import CustomNotification from "../Notification/CustomNotification";
 import TextArea from "antd/es/input/TextArea";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
+import { useDispatch } from "react-redux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 const AddCustomerForm = ({
   layout = "vertical",
   size = "large",
@@ -14,7 +16,7 @@ const AddCustomerForm = ({
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
   const [customerId, setCustomerId] = useState("");
-
+  const dispatch = useDispatch();
   useEffect(() => {
     CUSTOMER_SERVICE_FIREBASE.getLastDataRef("/customers")
       .then((snapshot) => {
@@ -32,21 +34,28 @@ const AddCustomerForm = ({
 
   const handleFinish = (values) => {
     values = { ...values, order_history: [] };
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     if (!values.note) {
       values.note = "";
     }
     CUSTOMER_SERVICE_FIREBASE.addCustomer(customerId, values)
       .then(() => {
-        CustomNotification(
-          "success",
-          "Add new customer ok",
-          "Please wait a minute",
-          "",
-          Date.now()
-        );
+        setTimeout(() => {
+          timeOutId = setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+          }, 2000);
+          CustomNotification(
+            "success",
+            "Add new customer ok",
+            "Please wait a minute",
+            "",
+            Date.now()
+          );
+        }, 2000);
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 3000);
       })
       .catch((error) => {
         console.log("error");

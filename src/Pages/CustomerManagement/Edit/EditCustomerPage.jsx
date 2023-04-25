@@ -70,7 +70,7 @@ const EditCustomerPage = () => {
     );
   };
 
-  if (Object.keys(customerInfo).length) {
+  if (Object.keys(customerInfo).length && !loading) {
     return (
       <>
         <Header />

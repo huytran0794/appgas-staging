@@ -26,7 +26,15 @@ const mapStringSplice = (str) => {
   console.log(strSplitted[strSplitted.length - 1]);
 
   if (strSplitted[0] === "(" && strSplitted[strSplitted.length - 1] === ")") {
-    return str.split("").slice(1, -1).join("");
+    return strSplitted.slice(1, -1).join("");
+  }
+
+  if (strSplitted[0] === "(") {
+    return strSplitted.slice(1).join("");
+  }
+
+  if (strSplitted[strSplitted.length - 1] === ")") {
+    return strSplitted.slice(0, -1).join("");
   }
 
   return str;

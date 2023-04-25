@@ -8,6 +8,8 @@ import { userActions } from "../../redux/slice/userSlice";
 import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import CustomNotification from "../Notification/CustomNotification";
 import { mapStringSplice } from "../../utils/utils";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useState } from "react";
 
 const EditCustomerForm = ({
   layout = "vertical",
@@ -18,21 +20,32 @@ const EditCustomerForm = ({
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
+  const [loading, setLoading] = useState(true);
+
   const handleFinish = (values) => {
     values.map = mapStringSplice(values.map);
     let { id, ...customerData } = customerInfo;
+    let timeOutId;
+    dispatch(spinnerActions.setLoadingOn());
     CUSTOMER_SERVICE_FIREBASE.updateCustomer(customerInfo.id, {
       ...customerData,
       ...values,
     })
       .then((res) => {
-        CustomNotification(
-          "success",
-          "Update customer ok",
-          "Please wait a minute",
-          "",
-          Date.now()
-        );
+        setTimeout(() => {
+          timeOutId = setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+            setLoading(false);
+          }, 2000);
+          CustomNotification(
+            "success",
+            "Update customer ok",
+            "Please wait a minute",
+            "",
+            Date.now()
+          );
+        }, 3500);
+
         setTimeout(() => {
           navigate("/manager");
           dispatch(userActions.setUserProfile(values));

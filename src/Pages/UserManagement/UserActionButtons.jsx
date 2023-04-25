@@ -7,7 +7,7 @@ import { SlEye } from "react-icons/sl";
 import { Modal, Popover, Space } from "antd";
 
 import { useNavigate } from "react-router-dom";
-import { DesktopView, MobileView } from "../../core/HOC/Responsive";
+import { DesktopView, MobileView, TabletView } from "../../core/HOC/Responsive";
 
 import { TfiMore } from "react-icons/tfi";
 import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
@@ -63,6 +63,7 @@ const UserActionButtons = ({ userData }) => {
     return (
       <>
         <DesktopView>{renderDesktopViewButtons()}</DesktopView>
+        <TabletView>{renderMobileViewButtons()}</TabletView>
         <MobileView>{renderMobileViewButtons()}</MobileView>
       </>
     );
@@ -95,18 +96,23 @@ const UserActionButtons = ({ userData }) => {
     );
   };
   const renderMobileViewButtons = () => {
+    const itemSize = "23px";
     let popOverContent = (
-      <Space align={"center"} className="btn-actions justify-center w-full">
+      <Space
+        size={30}
+        align={"center"}
+        className="btn-actions justify-center w-full"
+      >
         <SlEye
           onClick={() => handleView(userData)}
           className="cursor-pointer"
-          size={"20px"}
+          size={itemSize}
           color={"#3F80FD"}
         />
         <AiOutlineEdit
           onClick={() => handleEdit(userData)}
           className="cursor-pointer"
-          size={"20px"}
+          size={itemSize}
           color={"#82D973"}
         />
         <FiTrash
@@ -114,7 +120,7 @@ const UserActionButtons = ({ userData }) => {
             handleDeleteCustomer(userData);
           }}
           className="cursor-pointer"
-          size={"20px"}
+          size={itemSize}
           color={"red"}
         />
       </Space>
