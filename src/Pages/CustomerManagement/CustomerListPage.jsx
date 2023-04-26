@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomerManageTable from "./CustomerManageTable";
 import SectionWrapper from "../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../core/Components/Header/Header";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -15,6 +15,7 @@ import { exportToExcel } from "../../core/Components/ExcelReport/exportExcel";
 import { sendMailWithFile } from "../../core/Components/Email/sendMail";
 import CustomNotification from "../../core/Components/Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../core/services/customerServ.firebase";
+import { prepareData } from "../../core/utils/utils";
 
 const CustomerListPage = () => {
   const [search, setSearch] = useState("");
@@ -47,14 +48,16 @@ const CustomerListPage = () => {
   };
 
   let handleExportFile = (customerList) => {
+    let newCustomerList = prepareData(customerList);
+    console.log(prepareData(customerList));
     const fileName = "file_report";
     const currentDate = new Date().getTime();
 
     let fileBlobData = exportToExcel(
       `${fileName}_${currentDate}`,
-      customerList
+      newCustomerList
     );
-
+    let k = Date.now();
     const fileRef = ref(storage, `files/${fileName}_${currentDate}.xlsx`);
     uploadBytes(fileRef, fileBlobData)
       .then((snapshot) => {
@@ -63,7 +66,8 @@ const CustomerListPage = () => {
           "Exporting data",
           "Please wait a minute",
           "",
-          Date.now()
+          k,
+          3
         );
         return getDownloadURL(fileRef);
       })
@@ -71,19 +75,22 @@ const CustomerListPage = () => {
         let templateParams = {
           from_name: "system",
           message: `<p>Link download: <a href="${url}" download>Link</a></p>`,
-          to_email: LOCAL_SERVICE.user.get().email,
-          // to_email: "kuum94@gmail.com",
+          // to_email: LOCAL_SERVICE.user.get().email,
+          to_email: "kuum94@gmail.com",
         };
         return sendMailWithFile(templateParams);
       })
       .then((result) => {
-        CustomNotification(
-          "success",
-          "Email is sent",
-          "Please check your inbox",
-          "",
-          Date.now()
-        );
+        setTimeout(() => {
+          notification.destroy(k);
+          CustomNotification(
+            "success",
+            "Email is sent",
+            "Please check your inbox",
+            "",
+            Date.now()
+          );
+        }, 2000);
       })
       .catch((error) => {
         CustomNotification(
@@ -91,7 +98,8 @@ const CustomerListPage = () => {
           "Error",
           "Something went wrong",
           "",
-          Date.now()
+          Date.now() + 1,
+          2
         );
         console.log(error);
       });

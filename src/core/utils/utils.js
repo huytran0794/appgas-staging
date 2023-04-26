@@ -40,4 +40,57 @@ const mapStringSplice = (str) => {
   return str;
 };
 
-export { isValidUrl, isValidCoordinate, mapStringSplice };
+const flatArray = (customerList) => {
+  let newCustomerList = [];
+  customerList.forEach((customer) => {
+    let { order_history, id, fullname, email, sdt, address, note } = customer;
+    let newCustomer = { id, fullname, email, sdt, address, note };
+    if (order_history.length) {
+      order_history.forEach((order) => {
+        newCustomerList = [
+          ...newCustomerList,
+          {
+            ...newCustomer,
+            order_id: order.order_id,
+            order_content: order.order,
+            order_note: order.note,
+            order_complete_date: order.complete_date,
+          },
+        ];
+      });
+    } else {
+      newCustomerList = [
+        ...newCustomerList,
+        {
+          ...newCustomer,
+          order_id: "No data",
+          order_content: "No data",
+          order_note: "No data",
+          order_complete_date: "No data",
+        },
+      ];
+    }
+  });
+
+  return newCustomerList;
+};
+
+const prepareData = (customerList) => {
+  let newCustomerData = customerList.map((customer) => {
+    let { avatar, ...data } = customer;
+    if (!data.hasOwnProperty("order_history")) {
+      data.order_history = [];
+    }
+
+    Object.keys(data).forEach((item) => {
+      if (data[item] === "") {
+        data[item] = "No data";
+      }
+    });
+    return data;
+  });
+
+  return flatArray(newCustomerData);
+};
+
+export { isValidUrl, isValidCoordinate, mapStringSplice, prepareData };
