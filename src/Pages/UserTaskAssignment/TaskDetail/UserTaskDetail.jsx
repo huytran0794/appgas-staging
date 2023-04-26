@@ -7,8 +7,6 @@ import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapp
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
 import { LOCAL_SERVICE } from "../../../core/services/localServ";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const UserTaskDetail = () => {
   const { id } = useParams();
@@ -16,13 +14,10 @@ const UserTaskDetail = () => {
   let userInfo = LOCAL_SERVICE.user.get();
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
   const location = useLocation();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     if (userInfo.role !== "user") {
       navigate("/");
     } else {
@@ -45,17 +40,8 @@ const UserTaskDetail = () => {
         })
         .catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
-          console.log("running trong finally usetaskdetail");
-          timeOutId = setTimeout(() => {
-            dispatch(spinnerActions.setLoadingOff());
-            setLoading(false);
-          }, 2000);
         });
     }
-
-    return () => clearTimeout(timeOutId);
   }, [location.pathname, id]);
   const renderPage = (taskInfo) => {
     return (
@@ -66,7 +52,7 @@ const UserTaskDetail = () => {
       </div>
     );
   };
-  if (Object.keys(taskInfo).length && !loading) {
+  if (Object.keys(taskInfo).length) {
     return (
       <>
         <Header />

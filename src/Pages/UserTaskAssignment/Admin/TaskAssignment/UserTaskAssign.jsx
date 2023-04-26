@@ -14,12 +14,8 @@ const UserTaskAssign = () => {
   const { id } = useParams();
 
   let [userInfo, setUserInfo] = useState({});
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     let returnedData = {};
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
@@ -33,14 +29,7 @@ const UserTaskAssign = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        timeOutId = setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
       });
-    return () => clearTimeout(timeOutId);
   }, []);
   const bgClass = "bg-white rounded-lg p-6 shadow-xl";
   const userProfile = (userInfo) => {
@@ -99,7 +88,7 @@ const UserTaskAssign = () => {
     );
   };
 
-  if (Object.keys(userInfo).length && !loading) {
+  if (Object.keys(userInfo).length) {
     return (
       <>
         <Header />

@@ -15,12 +15,7 @@ const UserDetail = () => {
   const { id } = useParams();
   let [userInfo, setUserInfo] = useState({});
 
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -29,15 +24,7 @@ const UserDetail = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        timeOutId = setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
       });
-
-    return () => clearTimeout(timeOutId);
   }, []);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";
@@ -118,16 +105,14 @@ const UserDetail = () => {
   };
 
   return (
-    !loading && (
-      <>
-        <Header />
-        <SectionWrapper
-          sectionClass={"user-detail"}
-          title={"User detail"}
-          content={renderContent(userInfo)}
-        />
-      </>
-    )
+    <>
+      <Header />
+      <SectionWrapper
+        sectionClass={"user-detail"}
+        title={"User detail"}
+        content={renderContent(userInfo)}
+      />
+    </>
   );
 };
 

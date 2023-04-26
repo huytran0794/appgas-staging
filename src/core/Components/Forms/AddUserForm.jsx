@@ -4,8 +4,6 @@ import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import Label from "./Label/Label";
 import { useNavigate } from "react-router-dom";
 import CustomNotification from "../Notification/CustomNotification";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
 import { useRef } from "react";
 
 const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
@@ -22,7 +20,6 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState("");
-  const dispatch = useDispatch();
 
   useEffect(() => {
     USER_SERVICE_FIREBASE.getLastDataRef("/users")
@@ -42,20 +39,16 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
   const handleFinish = (values) => {
     buttonRef.current.disabled = true;
     buttonCancelRef.current.disabled = true;
-    dispatch(spinnerActions.setLoadingOn());
     values = { ...values, tasks: [] };
     USER_SERVICE_FIREBASE.addUser(userId, values)
       .then(() => {
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          CustomNotification(
-            "success",
-            "Add new user ok",
-            "Please wait a minute",
-            "",
-            Date.now()
-          );
-        }, 2000);
+        CustomNotification(
+          "success",
+          "Add new user ok",
+          "Please wait a minute",
+          "",
+          Date.now()
+        );
         setTimeout(() => {
           navigate("/admin/user-management");
         }, 3500);

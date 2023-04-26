@@ -9,8 +9,6 @@ import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import { sendMailWithTasks } from "../Email/sendMail";
 import { mapStringSplice } from "../../utils/utils";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const { Option } = Select;
 
@@ -24,8 +22,6 @@ const CustomerInputForm = ({
   const [customerList, setCustomerList] = useState([]);
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
-  const dispatch = useDispatch();
-
   useEffect(() => {
     let returnedData = [];
     CUSTOMER_SERVICE_FIREBASE.getCustomerList()
@@ -54,7 +50,7 @@ const CustomerInputForm = ({
   const handleFinish = (values) => {
     console.log("values from form");
     console.log(values);
-    dispatch(spinnerActions.setLoadingOn());
+
     let customerIdx = customerList.findIndex(
       (customer) => customer.sdt === values.sdt
     );
@@ -101,31 +97,25 @@ const CustomerInputForm = ({
         })
         .then((res) => {
           if (res.status === 200) {
-            setTimeout(() => {
-              dispatch(spinnerActions.setLoadingOff());
-              CustomNotification(
-                "success",
-                "Assign task for user ok",
-                "Please wait a minute",
-                "",
-                Date.now()
-              );
-            }, 1000);
+            CustomNotification(
+              "success",
+              "Assign task for user ok",
+              "Please wait a minute",
+              "",
+              Date.now()
+            );
             setTimeout(() => {
               navigate("/admin/user/task-management");
             }, 3000);
           } else {
-            setTimeout(() => {
-              dispatch(spinnerActions.setLoadingOff());
-              CustomNotification(
-                "error",
-                "Something went wrong !!",
-                "Please check your email again!!",
-                "",
-                Date.now()
-              );
-              throw new Error("Fail");
-            }, 1000);
+            CustomNotification(
+              "error",
+              "Something went wrong !!",
+              "Please check your email again!!",
+              "",
+              Date.now()
+            );
+            throw new Error("Fail");
           }
         })
         .catch((error) => {

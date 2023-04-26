@@ -118,7 +118,7 @@ function Header({ handleSearchInput }) {
           >
             <div className="avatar user-avatar">
               <Avatar
-                size={45}
+                size={38}
                 icon={<BiUser className="h-full mx-auto" />}
                 className="bg-[#6466f1]"
               />

@@ -18,12 +18,7 @@ const EditUserPage = () => {
   let [userInfo, setUserInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -33,15 +28,7 @@ const EditUserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        timeOutId = setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
       });
-
-    return () => clearTimeout(timeOutId);
   }, []);
 
   const renderPage = (userInfo) => {
@@ -65,7 +52,7 @@ const EditUserPage = () => {
     );
   };
 
-  if (Object.keys(userInfo).length && !loading) {
+  if (Object.keys(userInfo).length) {
     return (
       <>
         <Header />

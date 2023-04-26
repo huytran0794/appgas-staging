@@ -15,18 +15,12 @@ import { exportToExcel } from "../../core/Components/ExcelReport/exportExcel";
 import { sendMailWithFile } from "../../core/Components/Email/sendMail";
 import CustomNotification from "../../core/Components/Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../core/services/customerServ.firebase";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../core/redux/slice/spinnerSlice";
 
 const CustomerListPage = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [customerList, setCustomerList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(spinnerActions.setLoadingOn());
-    let timeOutId;
     let returnedData = [];
     CUSTOMER_SERVICE_FIREBASE.getCustomerList()
       .then((snapshot) => {
@@ -40,18 +34,12 @@ const CustomerListPage = () => {
               },
             ];
           });
-          timeOutId = setTimeout(() => {
-            dispatch(spinnerActions.setLoadingOff());
-            setLoading(false);
-            setCustomerList(returnedData);
-          }, 2000);
+          setCustomerList(returnedData);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-
-    return () => clearTimeout(timeOutId);
   }, []);
 
   let handleSearchInput = (searchTxt) => {
@@ -59,7 +47,6 @@ const CustomerListPage = () => {
   };
 
   let handleExportFile = (customerList) => {
-    dispatch(spinnerActions.setLoadingOn());
     const fileName = "file_report";
     const currentDate = new Date().getTime();
 
@@ -90,10 +77,6 @@ const CustomerListPage = () => {
         return sendMailWithFile(templateParams);
       })
       .then((result) => {
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
         CustomNotification(
           "success",
           "Email is sent",
@@ -141,7 +124,7 @@ const CustomerListPage = () => {
       </div>
     );
   };
-  if (customerList.length && !loading) {
+  if (customerList.length) {
     return (
       <>
         <Header handleSearchInput={handleSearchInput} />

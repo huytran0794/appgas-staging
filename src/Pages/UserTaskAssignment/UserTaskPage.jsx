@@ -9,34 +9,22 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 const UserTaskPage = () => {
   let navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     if (LOCAL_SERVICE.user.getRole() === "user") {
       navigate("/");
     }
-
-    timeOutId = setTimeout(() => {
-      dispatch(spinnerActions.setLoadingOff());
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timeOutId);
   }, []);
 
   return (
-    !loading && (
-      <>
-        <Header />
-        <SectionWrapper
-          sectionClass={"user"}
-          title={"Task Assign"}
-          content={<UserTaskManageTable />}
-        />
-      </>
-    )
+    <>
+      <Header />
+      <SectionWrapper
+        sectionClass={"user"}
+        title={"Task Assign"}
+        content={<UserTaskManageTable />}
+      />
+    </>
   );
 };
 

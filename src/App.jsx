@@ -19,8 +19,6 @@ import UserTaskDetail from "./Pages/UserTaskAssignment/TaskDetail/UserTaskDetail
 import OrderDetail from "./Pages/CustomerManagement/Detail/OrderDetail";
 import AddAdminPage from "./Pages/AdminManagement/AddAdminPage";
 
-import CustomPage from "./Pages/CustomPage";
-
 function App() {
   return (
     <>
@@ -33,8 +31,10 @@ function App() {
             <Route path="manager" element={<CustomerManagementPage />} />
             <Route path="admin/user-management" element={<UserManagePage />} />
             <Route path="admin/add-user" element={<AddUserPage />} />
+
             <Route path="admin/user/view/:id" element={<UserDetail />} />
             <Route path="admin/user/edit/:id" element={<EditUserPage />} />
+            
             <Route
               path="admin/user/task-management"
               element={<UserTaskPage />}

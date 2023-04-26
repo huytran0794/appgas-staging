@@ -3,19 +3,15 @@ import CustomerManageTable from "./CustomerManageTable";
 import SectionWrapper from "../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../core/Components/Header/Header";
 import CUSTOMER_SERVICE_FIREBASE from "../../core/services/customerServ.firebase";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../core/redux/slice/spinnerSlice";
+
 const CustomerManagementPage = () => {
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
   let handleSearchInput = (searchTxt) => {
     setSearch(searchTxt);
   };
   const [customerList, setCustomerList] = useState([]);
 
   useEffect(() => {
-    dispatch(spinnerActions.setLoadingOn());
     let getSnapShot = (snapshot) => {
       let returnedData = [];
       snapshot.forEach((item) => {
@@ -27,16 +23,12 @@ const CustomerManagementPage = () => {
           },
         ];
       });
-      setTimeout(() => {
-        dispatch(spinnerActions.setLoadingOff());
-        setLoading(false);
-        setCustomerList(returnedData);
-      }, 2000);
+      setCustomerList(returnedData);
     };
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);
 
-  if (customerList.length && !loading) {
+  if (customerList.length) {
     return (
       <>
         <Header handleSearchInput={handleSearchInput} />

@@ -5,8 +5,7 @@ import Label from "../../Components/Forms/Label/Label";
 
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import CustomNotification from "../Notification/CustomNotification";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
+
 import { useRef } from "react";
 
 const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
@@ -14,29 +13,24 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const [form] = Form.useForm();
   const initialValues = { ...userInfo };
 
-  const dispatch = useDispatch();
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
 
   const handleFinish = (values) => {
     buttonRef.current.disabled = true;
     buttonCancelRef.current.disabled = true;
-    dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE_FIREBASE.updateUser(userInfo.id, {
       ...userInfo,
       ...values,
     })
       .then(() => {
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          CustomNotification(
-            "success",
-            "Update customer ok",
-            "Please wait a minute",
-            "",
-            Date.now()
-          );
-        }, 2000);
+        CustomNotification(
+          "success",
+          "Update customer ok",
+          "Please wait a minute",
+          "",
+          Date.now()
+        );
 
         setTimeout(() => {
           navigate("/admin/user-management");
@@ -117,12 +111,14 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
           type="primary"
           htmlType="submit"
           className="btn-update bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold text-sm transition-all duration-[400ms] rounded-md outline-none border-none"
+          ref={buttonRef}
         >
           Update
         </Button>
         <Button
           htmlType="button"
           className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] text-white text-sm transition-all duration-[400ms] ml-3 rounded-md outline-none border-none"
+          ref={buttonCancelRef}
           onClick={() => {
             navigate("/admin/user-management");
           }}

@@ -18,10 +18,8 @@ const EditCustomerPage = () => {
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    let timeOutId;
-    dispatch(spinnerActions.setLoadingOn());
     let returnedData = {};
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(id)
       .then((snapshot) => {
@@ -37,16 +35,7 @@ const EditCustomerPage = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        console.log("running trong finally");
-        timeOutId = setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-          setLoading(false);
-        }, 2000);
       });
-
-    return () => clearTimeout(timeOutId);
   }, []);
 
   const renderPage = (customerInfo) => {
@@ -70,7 +59,7 @@ const EditCustomerPage = () => {
     );
   };
 
-  if (Object.keys(customerInfo).length && !loading) {
+  if (Object.keys(customerInfo).length) {
     return (
       <>
         <Header />
