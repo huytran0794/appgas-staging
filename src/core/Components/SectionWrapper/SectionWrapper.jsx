@@ -14,7 +14,7 @@ const SectionWrapper = ({
   sectionTitleClass,
 }) => {
   // let sectionDefaultClass = "max-h-[calc(100vh-90px-104px-10px)] overflow-auto";
-  let sectionDefaultClass = "overflow-auto mt-20 mb-24";
+  let sectionDefaultClass = "overflow-auto mt-28 mb-28";
   return (
     <section className={clsx(sectionDefaultClass, sectionClass)}>
       <Container className={containerClass}>
