@@ -90,7 +90,7 @@ const CustomerListPage = () => {
             "",
             Date.now()
           );
-        }, 2000);
+        }, 1000);
       })
       .catch((error) => {
         CustomNotification(
