@@ -13,13 +13,10 @@ const SectionWrapper = ({
   contentClass,
   sectionTitleClass,
 }) => {
+  // let sectionDefaultClass = "max-h-[calc(100vh-90px-104px-10px)] overflow-auto";
+  let sectionDefaultClass = "overflow-auto mt-20 mb-24";
   return (
-    <section
-      className={clsx(
-        "max-h-[calc(100vh-90px-104px-10px)]",
-        sectionClass !== "edit-customer" ? "overflow-auto" : ""
-      )}
-    >
+    <section className={clsx(sectionDefaultClass, sectionClass)}>
       <Container className={containerClass}>
         {title && (
           <div className={clsx("section-title", "mb-5", sectionTitleClass)}>

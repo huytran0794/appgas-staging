@@ -337,11 +337,14 @@ body {
 .header-area.top {
   top: 0;
   bottom: auto;
+
+  position: absolute;
 }
 
 .header-area.top .header-content-wrapper {
   border-radius: 0;
   margin-top: 0 !important;
+  padding: 12px 14px !important;
 }
 
 .header-area.is-sticky {
