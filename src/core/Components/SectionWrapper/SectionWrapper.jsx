@@ -16,8 +16,8 @@ const SectionWrapper = ({
   return (
     <section
       className={clsx(
-        "overflow-auto max-h-[calc(100vh-90px-104px-10px)]",
-        sectionClass
+        "max-h-[calc(100vh-90px-104px-10px)]",
+        sectionClass !== "edit-customer" ? "overflow-auto" : ""
       )}
     >
       <Container className={containerClass}>

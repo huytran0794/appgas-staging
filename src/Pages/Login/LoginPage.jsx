@@ -92,8 +92,8 @@ const LoginPage = () => {
   const renderPage = () => {
     return (
       !loading && (
-        <PageWrapper className="page-login h-full">
-          <Container className="h-full">
+        <PageWrapper className="page-login h-screen">
+          <Container className="h-screen">
             <div className="wrapper flex items-center justify-center h-full">
               <Space
                 className="form-wrapper bg-white rounded-[15px] p-7 max-w-[500px] w-full"
