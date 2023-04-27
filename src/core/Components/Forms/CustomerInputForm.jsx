@@ -84,8 +84,8 @@ const CustomerInputForm = ({
               Google map: ${taskData.map},
             `,
             button_html: `<p></p>`,
-            // to_email: userInfo.email,
-            to_email: "kuum94@gmail.com",
+            to_email: userInfo.email,
+            // to_email: "kuum94@gmail.com",
           };
 
           return sendMailWithTasks(templateParams);
