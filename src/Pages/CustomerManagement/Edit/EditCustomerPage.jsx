@@ -5,19 +5,15 @@ import EditCustomerForm from "../../../core/Components/Forms/EditCustomerForm";
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../../core/Components/Header/Header";
 
-import { isValidUrl } from "../../../core/utils/utils";
+import { isValidUrl, mapStringSplice } from "../../../core/utils/utils";
 import avatar from "../../../core/assets/images/avatar_2.svg";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
   let [customerInfo, setCustomerInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     let returnedData = {};
@@ -25,7 +21,7 @@ const EditCustomerPage = () => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           let item = snapshot.val();
-          returnedData = { ...item, id: id };
+          returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
           if (!item.hasOwnProperty("order_history")) {
             returnedData = { ...returnedData, order_history: [] };
             returnedData.note = returnedData.note.trim();

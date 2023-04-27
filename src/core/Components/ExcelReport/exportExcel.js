@@ -22,18 +22,7 @@ const autoFitCol = (data, headers) => {
 };
 
 export const exportToExcel = (fileName, dataToExport) => {
-  const headers = [
-    "Id",
-    "Full Name",
-    "Email",
-    "Sđt",
-    "Address",
-    "Note",
-    "Order id",
-    "Order content",
-    "Order note",
-    "Order complete date",
-  ];
+  const headers = ["Id", "Full Name", "Email", "Phone", "Address", "Link map"];
 
   const ws = XLSX.json_to_sheet(dataToExport);
   ws["!cols"] = autoFitCol(dataToExport, headers);

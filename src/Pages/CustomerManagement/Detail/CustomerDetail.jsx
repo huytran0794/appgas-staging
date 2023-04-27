@@ -9,10 +9,8 @@ import Header from "../../../core/Components/Header/Header";
 import CustomerOrderHistory from "./CustomerOrderHistory";
 
 import avatar from "../../../core/assets/images/avatar.svg";
-import { isValidUrl } from "../../../core/utils/utils";
+import { isValidUrl, mapStringSplice } from "../../../core/utils/utils";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -24,7 +22,7 @@ const CustomerDetail = () => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           let item = snapshot.val();
-          returnedData = { ...item, id: id };
+          returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
           if (!item.hasOwnProperty("order_history")) {
             returnedData = { ...returnedData, order_history: [] };
           }

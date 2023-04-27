@@ -8,8 +8,6 @@ import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapp
 import Header from "../../../core/Components/Header/Header";
 import avatar from "../../../core/assets/images/avatar.svg";
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const UserDetail = () => {
   const { id } = useParams();
@@ -19,7 +17,8 @@ const UserDetail = () => {
     USER_SERVICE_FIREBASE.getSingleUserInfo(id)
       .then((snapshot) => {
         if (snapshot.exists()) {
-          setUserInfo(snapshot.val());
+          let item = snapshot.val();
+          setUserInfo(item);
         }
       })
       .catch((error) => {

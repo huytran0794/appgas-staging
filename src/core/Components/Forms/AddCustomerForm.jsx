@@ -6,6 +6,7 @@ import CustomNotification from "../Notification/CustomNotification";
 import TextArea from "antd/es/input/TextArea";
 import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.firebase";
 import { useRef } from "react";
+import { mapStringSplice } from "../../utils/utils";
 const AddCustomerForm = ({
   layout = "vertical",
   size = "large",
@@ -37,7 +38,7 @@ const AddCustomerForm = ({
   const handleFinish = (values) => {
     buttonRef.current.disabled = true;
     buttonCancelRef.current.disabled = true;
-    values = { ...values, order_history: [] };
+    values = { ...values, map: mapStringSplice(values.map), order_history: [] };
 
     if (!values.note) {
       values.note = "";

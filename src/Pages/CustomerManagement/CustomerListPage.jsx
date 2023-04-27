@@ -15,7 +15,7 @@ import { exportToExcel } from "../../core/Components/ExcelReport/exportExcel";
 import { sendMailWithFile } from "../../core/Components/Email/sendMail";
 import CustomNotification from "../../core/Components/Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../core/services/customerServ.firebase";
-import { prepareData } from "../../core/utils/utils";
+import { mapStringSplice, prepareData } from "../../core/utils/utils";
 
 const CustomerListPage = () => {
   const [search, setSearch] = useState("");
@@ -32,6 +32,7 @@ const CustomerListPage = () => {
               {
                 ...item.val(),
                 id: item.key,
+                map: mapStringSplice(item.val().map),
               },
             ];
           });
