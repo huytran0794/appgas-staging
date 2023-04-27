@@ -83,14 +83,9 @@ const CustomerInputForm = ({
               Địa chỉ: ${taskData.address},
               Google map: ${taskData.map},
             `,
-            button_html: `<a
-                href="#"
-                style="background-color:blue!important; color: white; padding: 7px 15px; font-size: 17px!important; border: none!important;outline: none!important;font-weight: bold;"
-              >
-                Open my app
-              </a>`,
-            to_email: userInfo.email,
-            // to_email: "kuum94@gmail.com",
+            button_html: `<p></p>`,
+            // to_email: userInfo.email,
+            to_email: "kuum94@gmail.com",
           };
 
           return sendMailWithTasks(templateParams);
