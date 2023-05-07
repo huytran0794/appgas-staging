@@ -18,6 +18,8 @@ import UserTaskTrackingPage from "./Pages/UserTaskAssignment/UserTaskTrackingPag
 import UserTaskDetail from "./Pages/UserTaskAssignment/TaskDetail/UserTaskDetail";
 import OrderDetail from "./Pages/CustomerManagement/Detail/OrderDetail";
 import AddAdminPage from "./Pages/AdminManagement/AddAdminPage";
+import AdminManagePage from "./Pages/AdminManagement/AdminManagePage";
+import EditAdminPage from "./Pages/AdminManagement/Edit/EditAdminPage";
 
 function App() {
   return (
@@ -34,7 +36,7 @@ function App() {
 
             <Route path="admin/user/view/:id" element={<UserDetail />} />
             <Route path="admin/user/edit/:id" element={<EditUserPage />} />
-            
+
             <Route
               path="admin/user/task-management"
               element={<UserTaskPage />}
@@ -60,6 +62,12 @@ function App() {
               element={<OrderDetail order={1} />}
             />
             <Route path="master/admin/add-admin" element={<AddAdminPage />} />
+            <Route
+              path="master/admin/admin-management"
+              element={<AdminManagePage />}
+            />
+
+            <Route path="master/admin/edit/:id" element={<EditAdminPage />} />
           </Route>
         </Route>
       </Routes>

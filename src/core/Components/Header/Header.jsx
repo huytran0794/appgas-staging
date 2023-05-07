@@ -39,8 +39,9 @@ function Header({ handleSearchInput }) {
     window.location.href = "/login";
   };
 
-  let handleAddAdmin = () => {
-    navigate("/master/admin/add-admin");
+  let handleManageAdmin = () => {
+    // navigate("/master/admin/add-admin");
+    navigate("/master/admin/admin-management");
   };
 
   let renderUserName = () => {
@@ -51,8 +52,8 @@ function Header({ handleSearchInput }) {
     );
   };
 
-  let renderAddAdmin = () => {
-    let addAdminButton = (
+  let renderManageAdmin = () => {
+    let manageAdminButton = (
       <>
         <div className="avatar add-admin">
           <Avatar
@@ -63,10 +64,10 @@ function Header({ handleSearchInput }) {
             className="bg-[#6466f1]"
           />
         </div>
-        <p className="txt mb-0">add admin</p>
+        <p className="txt mb-0">Admin Management</p>
       </>
     );
-    return addAdminButton;
+    return manageAdminButton;
   };
 
   let userProfileActions = () => {
@@ -87,10 +88,10 @@ function Header({ handleSearchInput }) {
         {LOCAL_SERVICE.user.getRole() === "master" && (
           <div
             className="add-admin cursor-pointer hover:bg-slate-200/50 transition-all duration-700 py-4 px-2 flex gap-2 items-center rounded-md"
-            onClick={handleAddAdmin}
+            onClick={handleManageAdmin}
           >
             <div className="capitalize flex items-center gap-3">
-              {renderAddAdmin()}
+              {renderManageAdmin()}
             </div>
           </div>
         )}

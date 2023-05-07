@@ -1,11 +1,13 @@
 import { Table } from "antd";
 
 import React, { useEffect, useState } from "react";
-import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
-import UserActionButtons from "./UserActionButtons";
+import MASTER_SERVICE_FIREBASE from "../../core/services/masterServ.firebase";
+// import UserActionButtons from "./UserActionButtons";
 
-const UserManageTable = () => {
-  const [userList, setUserList] = useState([]);
+import AdminActionButtons from "./AdminActionButtons";
+
+const AdminManageTable = () => {
+  const [adminList, setAdminList] = useState([]);
   // fetch api
   useEffect(() => {
     let getSnapShot = (snapshot) => {
@@ -21,19 +23,19 @@ const UserManageTable = () => {
             },
           ];
         });
-        setUserList(returnedData);
+        setAdminList(returnedData);
       }
     };
 
-    USER_SERVICE_FIREBASE.getUserInfoObserver(getSnapShot);
+    MASTER_SERVICE_FIREBASE.getAdminInfoObserver(getSnapShot);
   }, []);
 
   const columns = [
     {
       title: "Full Name",
-      dataIndex: "username",
-      className: "username font-semibold text-[#292d32] text-base",
-      width: "20%",
+      dataIndex: "fullname",
+      className: "fullname admin-full-name font-semibold text-[#292d32] text-base",
+      // width: "30%",
     },
     {
       title: "Phone",
@@ -45,8 +47,8 @@ const UserManageTable = () => {
       title: "Action",
       dataIndex: "",
       key: "x",
-      render: (_, user) => {
-        return <UserActionButtons userData={user} />;
+      render: (_, admin) => {
+        return <AdminActionButtons adminData={admin} />;
       },
     },
   ];
@@ -56,11 +58,11 @@ const UserManageTable = () => {
       showHeader={false}
       // rowKey={(user) => user.id.toString()}
       columns={columns}
-      dataSource={userList}
+      dataSource={adminList}
       pagination={false}
-      className="user-manage-table manage-table"
+      className="admin-manage-table manage-table"
     />
   );
 };
 
-export default UserManageTable;
+export default AdminManageTable;

@@ -201,6 +201,7 @@ body {
 }
 
 .add-admin-form input,
+.edit-admin-form input,
 .add-user-form input,
 .add-customer-form input,
 .add-customer-form textarea,
@@ -1731,11 +1732,12 @@ body {
   display: none;
 }
 
-.ant-table-cell.fullname {
+/* .ant-table-cell.fullname {
   white-space: nowrap;
-}
+} */
 
-.ant-table-cell.username {
+.ant-table-cell.username,
+.ant-table-cell.admin-full-name {
   width: 100%;
 }
 

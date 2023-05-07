@@ -61,7 +61,7 @@ const CustomerManageTable = ({ search, customerListData }) => {
       columns={columns}
       dataSource={customerList}
       pagination={false}
-      className="customer-manage-table"
+      className="customer-manage-table manage-table"
     />
   );
 };
