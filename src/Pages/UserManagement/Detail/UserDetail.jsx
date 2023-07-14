@@ -2,7 +2,7 @@ import { Avatar, Space } from "antd";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 
 import Header from "../../../core/Components/Header/Header";
@@ -12,18 +12,18 @@ import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
 const UserDetail = () => {
   const { id } = useParams();
   let [userInfo, setUserInfo] = useState({});
-
+  let navigate = useNavigate();
   useEffect(() => {
-    USER_SERVICE_FIREBASE.getSingleUserInfo(id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let item = snapshot.val();
-          setUserInfo(item);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    let getSnapShot = (snapshot) => {
+      if (snapshot.exists()) {
+        let item = snapshot.val();
+        setUserInfo(item);
+      } else {
+        navigate("/manager");
+      }
+    };
+
+    USER_SERVICE_FIREBASE.getSingleUserInfoObserver(getSnapShot, id);
   }, []);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";

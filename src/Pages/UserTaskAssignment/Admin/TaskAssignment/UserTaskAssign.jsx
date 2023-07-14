@@ -7,8 +7,6 @@ import CustomerInputForm from "../../../../core/Components/Forms/CustomerInputFo
 import SectionWrapper from "../../../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../../../core/Components/Header/Header";
 import USER_SERVICE_FIREBASE from "../../../../core/services/userServ.firebase";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 const UserTaskAssign = () => {
   const { id } = useParams();
@@ -16,20 +14,20 @@ const UserTaskAssign = () => {
   let [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
-    let returnedData = {};
-    USER_SERVICE_FIREBASE.getSingleUserInfo(id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          returnedData = { ...snapshot.val(), id: snapshot.key };
-          if (!snapshot.val().hasOwnProperty("tasks")) {
-            returnedData = { ...returnedData, tasks: [] };
-          }
-          setUserInfo(returnedData);
+    let getSnapShot = (snapshot) => {
+      let returnedData = {};
+      if (snapshot.exists()) {
+        returnedData = { ...snapshot.val(), id: snapshot.key };
+        if (!snapshot.val().hasOwnProperty("tasks")) {
+          returnedData = { ...returnedData, tasks: [] };
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        setUserInfo(returnedData);
+      } else {
+        window.location.href = "/";
+      }
+    };
+
+    USER_SERVICE_FIREBASE.getSingleUserInfoObserver(getSnapShot, id);
   }, []);
   const bgClass = "bg-white rounded-lg p-6 shadow-xl";
   const userProfile = (userInfo) => {

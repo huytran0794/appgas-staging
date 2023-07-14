@@ -9,8 +9,6 @@ import EditUserForm from "../../../core/Components/Forms/EditUserForm";
 import avatar from "../../../core/assets/images/avatar.svg";
 import USER_SERVICE_FIREBASE from "../../../core/services/userServ.firebase";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 const EditUserPage = () => {
   const { id } = useParams();
@@ -19,16 +17,16 @@ const EditUserPage = () => {
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
   useEffect(() => {
-    USER_SERVICE_FIREBASE.getSingleUserInfo(id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot);
-          setUserInfo({ ...snapshot.val(), id: snapshot.key });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    let getSnapShot = (snapshot) => {
+      if (snapshot.exists()) {
+        let item = snapshot.val();
+        setUserInfo({ ...item, id: snapshot.key });
+      } else {
+        window.location.href = "/";
+      }
+    };
+
+    USER_SERVICE_FIREBASE.getSingleUserInfoObserver(getSnapShot, id);
   }, []);
 
   const renderPage = (userInfo) => {

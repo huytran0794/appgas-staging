@@ -15,22 +15,18 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
   useEffect(() => {
-    if (LOCAL_SERVICE.user.getRole() !== "master") {
-      navigate("/");
-    } else {
-      MASTER_SERVICE_FIREBASE.getLastDataRef("/admin")
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            snapshot.forEach((item) => {
-              setAdminId(parseInt(item.key) + 1);
-            });
-          }
-        })
-        .catch((error) => {
-          console.log("error");
-          console.log(error);
-        });
-    }
+    MASTER_SERVICE_FIREBASE.getLastDataRef("/admin")
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          snapshot.forEach((item) => {
+            setAdminId(parseInt(item.key) + 1);
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("error");
+        console.log(error);
+      });
   }, []);
 
   const labelItem = (labelText) => (
@@ -52,7 +48,7 @@ const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
         );
 
         setTimeout(() => {
-          navigate("/");
+          navigate("/master/admin/admin-management");
         }, 4000);
       })
       .catch((error) => {

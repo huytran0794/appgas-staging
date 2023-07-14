@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Label from "../../Components/Forms/Label/Label";
@@ -18,7 +18,10 @@ const EditCustomerForm = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const initialValues = { ...customerInfo };
+
+  useEffect(() => {
+    form.setFieldsValue(customerInfo);
+  }, [customerInfo]);
 
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
@@ -74,7 +77,7 @@ const EditCustomerForm = ({
       name="edit-customer"
       layout={layout}
       size={size}
-      initialValues={initialValues}
+      initialValues={customerInfo}
       onFinish={handleFinish}
       onFinishFailed={handleFinishFailed}
       className="edit-customer-form px-4"
@@ -139,7 +142,6 @@ const EditCustomerForm = ({
       </div>
 
       <Form.Item label={labelItem("Note")} name="note">
-        {/* <Input type="text" /> */}
         <TextArea />
       </Form.Item>
 

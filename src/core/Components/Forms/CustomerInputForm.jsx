@@ -22,29 +22,23 @@ const CustomerInputForm = ({
   const [customerList, setCustomerList] = useState([]);
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
+
   useEffect(() => {
-    let returnedData = [];
-    CUSTOMER_SERVICE_FIREBASE.getCustomerList()
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          snapshot.forEach((item) => {
-            returnedData = [
-              ...returnedData,
-              {
-                key: item.key,
-                ...item.val(),
-                id: item.key,
-              },
-            ];
-          });
-          console.log("returneddata");
-          console.log(returnedData);
-          setCustomerList(returnedData);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    let getSnapShot = (snapshot) => {
+      let returnedData = [];
+      snapshot.forEach((item) => {
+        returnedData = [
+          ...returnedData,
+          {
+            key: item.key,
+            ...item.val(),
+            id: item.key,
+          },
+        ];
       });
+      setCustomerList(returnedData);
+    };
+    CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);
 
   const handleFinish = (values) => {
@@ -153,11 +147,10 @@ const CustomerInputForm = ({
           { required: true, message: "Phone number is required" },
           {
             pattern: /^\d+$/,
-            message: "Number only, no whitespace",
+            message: "Phone number must be number only, no whitespace",
           },
         ]}
       >
-        {/* <Input /> */}
         <Select
           showSearch
           placeholder="Search customer phone number"

@@ -1,40 +1,21 @@
 import { Table } from "antd";
 
 import React, { useEffect, useState } from "react";
-import MASTER_SERVICE_FIREBASE from "../../core/services/masterServ.firebase";
 // import UserActionButtons from "./UserActionButtons";
 
 import AdminActionButtons from "./AdminActionButtons";
 
-const AdminManageTable = () => {
-  const [adminList, setAdminList] = useState([]);
-  // fetch api
+const AdminManageTable = ({ adminListData }) => {
+  const [adminList, setAdminList] = useState([...adminListData]);
   useEffect(() => {
-    let getSnapShot = (snapshot) => {
-      if (snapshot.exists()) {
-        let returnedData = [];
-        snapshot.forEach((item) => {
-          returnedData = [
-            ...returnedData,
-            {
-              key: item.key,
-              ...item.val(),
-              id: item.key,
-            },
-          ];
-        });
-        setAdminList(returnedData);
-      }
-    };
-
-    MASTER_SERVICE_FIREBASE.getAdminInfoObserver(getSnapShot);
-  }, []);
-
+    setAdminList([...adminListData]);
+  }, [adminListData]);
   const columns = [
     {
       title: "Full Name",
       dataIndex: "fullname",
-      className: "fullname admin-full-name font-semibold text-[#292d32] text-base",
+      className:
+        "fullname admin-full-name font-semibold text-[#292d32] text-base",
       // width: "30%",
     },
     {
@@ -56,7 +37,7 @@ const AdminManageTable = () => {
   return (
     <Table
       showHeader={false}
-      // rowKey={(user) => user.id.toString()}
+      rowKey={(admin) => admin.id.toString()}
       columns={columns}
       dataSource={adminList}
       pagination={false}

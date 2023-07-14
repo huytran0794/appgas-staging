@@ -2,7 +2,7 @@ import { Avatar, Space, Tabs } from "antd";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 
 import Header from "../../../core/Components/Header/Header";
@@ -15,23 +15,22 @@ import CUSTOMER_SERVICE_FIREBASE from "../../../core/services/customerServ.fireb
 const CustomerDetail = () => {
   const { id } = useParams();
   let [customerInfo, setCustomerInfo] = useState({});
-
+  let navigate = useNavigate();
   useEffect(() => {
-    let returnedData = {};
-    CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let item = snapshot.val();
-          returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
-          if (!item.hasOwnProperty("order_history")) {
-            returnedData = { ...returnedData, order_history: [] };
-          }
-          setCustomerInfo(returnedData);
+    let getSnapShot = (snapshot) => {
+      let returnedData = {};
+      if (snapshot.exists()) {
+        let item = snapshot.val();
+        returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
+        if (!item.hasOwnProperty("order_history")) {
+          returnedData = { ...returnedData, order_history: [] };
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        setCustomerInfo(returnedData);
+      } else {
+        navigate("/manager");
+      }
+    };
+    CUSTOMER_SERVICE_FIREBASE.getSingleCustomerInfoObserver(getSnapShot, id);
   }, []);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";
@@ -174,16 +173,21 @@ const CustomerDetail = () => {
     }
     return null;
   };
-  return (
-    <>
-      <Header />
-      <SectionWrapper
-        sectionClass={"customer-detail"}
-        title={"Customer Details"}
-        content={renderContent(customerInfo)}
-      />
-    </>
-  );
+
+  if (Object.keys(customerInfo).length) {
+    return (
+      <>
+        <Header />
+        <SectionWrapper
+          sectionClass={"customer-detail"}
+          title={"Customer Details"}
+          content={renderContent(customerInfo)}
+        />
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default CustomerDetail;

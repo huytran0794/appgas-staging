@@ -4,32 +4,12 @@ import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
 
 import UserActionButtons from "./UserTaskActionButtons";
 
-const UserTaskManageTable = () => {
-  const [userList, setUserList] = useState([]);
+const UserTaskManageTable = ({ userListData }) => {
+  const [userList, setUserList] = useState([...userListData]);
   // fetch api
   useEffect(() => {
-    let returnedData = [];
-    USER_SERVICE_FIREBASE.getUserInfo()
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          snapshot.forEach((item) => {
-            returnedData = [
-              ...returnedData,
-              {
-                key: item.key,
-                ...item.val(),
-                id: item.key,
-              },
-            ];
-          });
-          setUserList(returnedData);
-        }
-      })
-      .catch((error) => {
-        console.log("error");
-        console.log(error);
-      });
-  }, []);
+    setUserList([...userListData]);
+  }, [userListData]);
 
   const columns = [
     {

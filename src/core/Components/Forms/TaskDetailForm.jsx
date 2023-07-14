@@ -22,24 +22,26 @@ const TaskDetailForm = ({
   const [form] = Form.useForm();
 
   let initialValues = { ...taskInfo, specialNote: "" };
-
+  form.setFieldsValue(initialValues);
   const [customerInfo, setCustomerInfo] = useState({});
   const buttonFinishRef = useRef(null);
   const buttonCancelRef = useRef(null);
 
   useEffect(() => {
-    let returnedData = {};
-    CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(taskInfo.customer_id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          returnedData = { ...snapshot.val(), id: taskInfo.customer_id };
-          if (!snapshot.val().hasOwnProperty("order_history")) {
-            returnedData = { ...returnedData, order_history: [] };
-          }
-          setCustomerInfo(returnedData);
+    let getSnapShot = (snapshot) => {
+      let returnedData = {};
+      if (snapshot.exists()) {
+        returnedData = { ...snapshot.val(), id: taskInfo.customer_id };
+        if (!snapshot.val().hasOwnProperty("order_history")) {
+          returnedData = { ...returnedData, order_history: [] };
         }
-      })
-      .catch((err) => {});
+        setCustomerInfo(returnedData);
+      }
+    };
+    CUSTOMER_SERVICE_FIREBASE.getSingleCustomerInfoObserver(
+      getSnapShot,
+      taskInfo.customer_id
+    );
   }, []);
 
   const handleFinish = (values) => {
@@ -67,10 +69,6 @@ const TaskDetailForm = ({
       order_history: [...newCustomerData.order_history, newOrderHistory],
     };
     taskInfo.completed = true;
-    console.log("task info id");
-    console.log(taskInfo);
-    console.log("userInfo");
-    console.log(userInfo.tasks);
     let taskIdx = userInfo.tasks.findIndex((task) => task.id === taskInfo.id);
     if (taskIdx > -1) {
       userInfo.tasks[taskIdx] = { ...taskInfo };
@@ -160,7 +158,6 @@ const TaskDetailForm = ({
         size={size}
         onFinish={handleFinish}
         className="user-task-detail-form px-4"
-        initialValues={initialValues}
       >
         <Form.Item name="sdt" label={labelItem("Customer phone number")}>
           <Input placeholder="Customer phone number" disabled />

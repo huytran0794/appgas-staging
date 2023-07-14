@@ -6,6 +6,8 @@ import { LOCAL_SERVICE } from "../../services/localServ";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../redux/slice/userSlice";
+import ADMIN_SERVICE_FIREBASE from "../../services/adminServ.firebase";
+import MASTER_SERVICE_FIREBASE from "../../services/masterServ.firebase";
 
 const PrivateRoutes = () => {
   let notiRef = useRef(null);
@@ -53,8 +55,14 @@ const PrivateRoutes = () => {
   };
 
   useEffect(() => {
-    let getSnapShot = (snapshot) => {
+    let getUserSnapShot = (snapshot) => {
       if (snapshot.exists()) {
+        console.log("snapshot");
+        console.log(snapshot.val());
+        auth = { ...auth, ...snapshot.val() };
+        LOCAL_SERVICE.user.set(auth, auth.role);
+        dispatch(userActions.setUserProfile(auth));
+
         USER_SERVICE_FIREBASE.assignTask(
           auth.id,
           snapshot.val().hasOwnProperty("tasks"),
@@ -62,8 +70,44 @@ const PrivateRoutes = () => {
         );
       }
     };
-    if (auth && auth.role.toLowerCase() === "user") {
-      USER_SERVICE_FIREBASE.getSingleUserInfoObserver(auth.id, getSnapShot);
+
+    let getAdminSnapShot = (snapshot) => {
+      if (snapshot.exists()) {
+        auth = { ...auth, ...snapshot.val() };
+        LOCAL_SERVICE.user.set(auth, auth.role);
+        dispatch(userActions.setUserProfile(auth));
+      }
+    };
+
+    let getMasterSnapShot = (snapshot) => {
+      if (snapshot.exists()) {
+        auth = { ...auth, ...snapshot.val() };
+        LOCAL_SERVICE.user.set(auth, auth.role);
+        dispatch(userActions.setUserProfile(auth));
+      }
+    };
+
+    if (auth) {
+      if (auth.role.toLowerCase() === "user") {
+        USER_SERVICE_FIREBASE.getSingleUserInfoObserver(
+          getUserSnapShot,
+          auth.id
+        );
+      }
+
+      if (auth.role.toLowerCase() === "admin") {
+        ADMIN_SERVICE_FIREBASE.getSingleAdminInfoObserver(
+          getAdminSnapShot,
+          auth.id
+        );
+      }
+
+      if (auth.role.toLowerCase() === "master") {
+        MASTER_SERVICE_FIREBASE.getSingleMasterInfoObserver(
+          getMasterSnapShot,
+          auth.id
+        );
+      }
     }
   }, []);
 

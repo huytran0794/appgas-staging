@@ -24,6 +24,15 @@ const CUSTOMER_SERVICE_FIREBASE = {
     });
   },
 
+  getSingleCustomerInfoObserver: (setFunc, customerId) => {
+    if (!customerId) {
+      throw new Error("Please send customerId");
+    }
+    onValue(generateDbRef(`/customers/${customerId}`), (snapshot) => {
+      setFunc(snapshot);
+    });
+  },
+
   deleteCustomer: (customerId) => {
     return remove(generateDbRef(`/customers/${customerId}`));
   },

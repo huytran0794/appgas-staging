@@ -28,23 +28,21 @@ const CustomerManagementPage = () => {
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);
 
-  if (customerList.length) {
-    return (
-      <>
-        <Header handleSearchInput={handleSearchInput} />
-        <SectionWrapper
-          sectionClass={"customers"}
-          title={"Customer Management"}
-          content={
-            <CustomerManageTable
-              search={search}
-              customerListData={customerList}
-            />
-          }
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <Header handleSearchInput={handleSearchInput} />
+      <SectionWrapper
+        sectionClass={"customers"}
+        title={"Customer Management"}
+        content={
+          <CustomerManageTable
+            search={search}
+            customerListData={customerList}
+          />
+        }
+      />
+    </>
+  );
 };
 
 export default CustomerManagementPage;

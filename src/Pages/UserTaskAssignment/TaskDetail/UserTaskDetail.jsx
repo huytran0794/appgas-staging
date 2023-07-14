@@ -21,28 +21,29 @@ const UserTaskDetail = () => {
     if (userInfo.role !== "user") {
       navigate("/");
     } else {
-      USER_SERVICE_FIREBASE.getSingleUserInfo(userInfo.id)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            if (snapshot.val().hasOwnProperty("tasks")) {
-              userInfo.tasks = [...snapshot.val().tasks];
-              LOCAL_SERVICE.user.set(userInfo, userInfo.role);
-              let taskIdx = snapshot
-                .val()
-                .tasks.findIndex((task) => task.id === id);
-              if (taskIdx > -1) {
-                setTaskInfo({ ...snapshot.val().tasks[taskIdx] });
-              }
-            } else {
-              userInfo.tasks = [];
+      let getSnapShot = (snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val().hasOwnProperty("tasks")) {
+            userInfo.tasks = [...snapshot.val().tasks];
+            LOCAL_SERVICE.user.set(userInfo, userInfo.role);
+            let taskIdx = snapshot
+              .val()
+              .tasks.findIndex((task) => task.id === id);
+            if (taskIdx > -1) {
+              setTaskInfo({ ...snapshot.val().tasks[taskIdx] });
             }
+          } else {
+            userInfo.tasks = [];
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        } else {
+          window.location.href = "/";
+        }
+      };
+
+      USER_SERVICE_FIREBASE.getSingleUserInfoObserver(getSnapShot, userInfo.id);
     }
   }, [location.pathname, id]);
+
   const renderPage = (taskInfo) => {
     return (
       <div className={clsx("wrapper flex flex-col justify-between", bgClass)}>
@@ -52,6 +53,7 @@ const UserTaskDetail = () => {
       </div>
     );
   };
+
   if (Object.keys(taskInfo).length) {
     return (
       <>

@@ -1,33 +1,15 @@
 import { Table } from "antd";
 
 import React, { useEffect, useState } from "react";
-import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
 import UserActionButtons from "./UserActionButtons";
 
-const UserManageTable = () => {
-  const [userList, setUserList] = useState([]);
-  // fetch api
+const UserManageTable = ({ userListData }) => {
+  const [userList, setUserList] = useState(userListData);
+  console.log("userList");
+  console.log(userList);
   useEffect(() => {
-    let getSnapShot = (snapshot) => {
-      if (snapshot.exists()) {
-        let returnedData = [];
-        snapshot.forEach((item) => {
-          returnedData = [
-            ...returnedData,
-            {
-              key: item.key,
-              ...item.val(),
-              id: item.key,
-            },
-          ];
-        });
-        setUserList(returnedData);
-      }
-    };
-
-    USER_SERVICE_FIREBASE.getUserInfoObserver(getSnapShot);
-  }, []);
-
+    setUserList(userListData);
+  }, [userListData]);
   const columns = [
     {
       title: "Full Name",
@@ -54,7 +36,7 @@ const UserManageTable = () => {
   return (
     <Table
       showHeader={false}
-      // rowKey={(user) => user.id.toString()}
+      rowKey={(user) => user.id.toString()}
       columns={columns}
       dataSource={userList}
       pagination={false}

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input } from "antd";
 import Label from "./Label/Label";
 import MASTER_SERVICE_FIREBASE from "../../services/masterServ.firebase";
-import { LOCAL_SERVICE } from "../../services/localServ";
 import CustomNotification from "../Notification/CustomNotification";
 import { useRef } from "react";
 
@@ -11,14 +10,12 @@ const EditAdminForm = ({ layout = "vertical", size = "large", adminInfo }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...adminInfo };
-
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
+
   useEffect(() => {
-    if (LOCAL_SERVICE.user.getRole() !== "master") {
-      navigate("/");
-    }
-  }, []);
+    form.setFieldsValue(initialValues);
+  }, [adminInfo]);
 
   const labelItem = (labelText) => (
     <Label className="text-sm font-medium text-[#67748e] capitalize">
@@ -59,7 +56,6 @@ const EditAdminForm = ({ layout = "vertical", size = "large", adminInfo }) => {
         name="edit-admin"
         layout={layout}
         size={size}
-        initialValues={initialValues}
         onFinish={handleFinish}
         className="edit-admin-form px-4"
       >
@@ -125,7 +121,7 @@ const EditAdminForm = ({ layout = "vertical", size = "large", adminInfo }) => {
             className="btn-cancel bg-[#dc3545] hover:bg-[#bb2d3b] text-white text-sm transition-all duration-[400ms] ml-3 rounded-md outline-none border-none"
             ref={buttonCancelRef}
             onClick={() => {
-              navigate("/");
+              navigate("/master/admin/admin-management");
             }}
           >
             Cancel

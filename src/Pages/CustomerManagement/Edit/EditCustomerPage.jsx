@@ -1,6 +1,6 @@
 import { Avatar } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditCustomerForm from "../../../core/Components/Forms/EditCustomerForm";
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 import Header from "../../../core/Components/Header/Header";
@@ -12,26 +12,26 @@ import clsx from "clsx";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
+  let navigate = useNavigate();
   let [customerInfo, setCustomerInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
   useEffect(() => {
-    let returnedData = {};
-    CUSTOMER_SERVICE_FIREBASE.getCustomerInfo(id)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let item = snapshot.val();
-          returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
-          if (!item.hasOwnProperty("order_history")) {
-            returnedData = { ...returnedData, order_history: [] };
-            returnedData.note = returnedData.note.trim();
-          }
-          setCustomerInfo(returnedData);
+    let getSnapShot = (snapshot) => {
+      let returnedData = {};
+      if (snapshot.exists()) {
+        let item = snapshot.val();
+        returnedData = { ...item, id: id, map: mapStringSplice(item.map) };
+        returnedData.note = returnedData.note.trim();
+        if (!item.hasOwnProperty("order_history")) {
+          returnedData = { ...returnedData, order_history: [] };
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        setCustomerInfo(returnedData);
+      } else {
+        window.location.href = "/";
+      }
+    };
+    CUSTOMER_SERVICE_FIREBASE.getSingleCustomerInfoObserver(getSnapShot, id);
   }, []);
 
   const renderPage = (customerInfo) => {

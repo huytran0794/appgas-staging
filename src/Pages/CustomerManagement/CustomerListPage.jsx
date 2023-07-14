@@ -22,26 +22,21 @@ const CustomerListPage = () => {
   const navigate = useNavigate();
   const [customerList, setCustomerList] = useState([]);
   useEffect(() => {
-    let returnedData = [];
-    CUSTOMER_SERVICE_FIREBASE.getCustomerList()
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          snapshot.forEach((item) => {
-            returnedData = [
-              ...returnedData,
-              {
-                ...item.val(),
-                id: item.key,
-                map: mapStringSplice(item.val().map),
-              },
-            ];
-          });
-          setCustomerList(returnedData);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    let getSnapShot = (snapshot) => {
+      let returnedData = [];
+      snapshot.forEach((item) => {
+        returnedData = [
+          ...returnedData,
+          {
+            ...item.val(),
+            id: item.key,
+            map: mapStringSplice(item.val().map),
+          },
+        ];
       });
+      setCustomerList(returnedData);
+    };
+    CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);
 
   let handleSearchInput = (searchTxt) => {
@@ -133,24 +128,22 @@ const CustomerListPage = () => {
       </div>
     );
   };
-  if (customerList.length) {
-    return (
-      <>
-        <Header handleSearchInput={handleSearchInput} />
-        <SectionWrapper
-          sectionClass={"customers"}
-          title={renderTitle()}
-          titleClass="flex items-center justify-center"
-          content={
-            <CustomerManageTable
-              search={search}
-              customerListData={customerList}
-            />
-          }
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <Header handleSearchInput={handleSearchInput} />
+      <SectionWrapper
+        sectionClass={"customers"}
+        title={renderTitle()}
+        titleClass="flex items-center justify-center"
+        content={
+          <CustomerManageTable
+            search={search}
+            customerListData={customerList}
+          />
+        }
+      />
+    </>
+  );
 };
 
 export default CustomerListPage;

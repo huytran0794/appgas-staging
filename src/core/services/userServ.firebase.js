@@ -32,15 +32,13 @@ const USER_SERVICE_FIREBASE = {
     });
   },
 
-  getSingleUserInfoObserver: (userId, setFunc) => {
+  getSingleUserInfoObserver: (setFunc, userId) => {
     onValue(generateDbRef(`/users/${userId}`), (snapshot) => {
       setFunc(snapshot);
     });
   },
 
   assignTask: (userId, hasTask, callbackFunc) => {
-    console.log("hastask");
-    console.log(hasTask);
     if (hasTask) {
       console.log("child changed on has task");
       onChildChanged(generateDbRef(`/users/${userId}`), (snapshot) => {

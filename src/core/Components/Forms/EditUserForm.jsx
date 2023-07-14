@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Label from "../../Components/Forms/Label/Label";
 
@@ -12,6 +12,9 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...userInfo };
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [userInfo]);
 
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
@@ -19,8 +22,9 @@ const EditUserForm = ({ layout = "vertical", size = "large", userInfo }) => {
   const handleFinish = (values) => {
     buttonRef.current.disabled = true;
     buttonCancelRef.current.disabled = true;
-    USER_SERVICE_FIREBASE.updateUser(userInfo.id, {
-      ...userInfo,
+    let { id, newUserInfo } = userInfo;
+    USER_SERVICE_FIREBASE.updateUser(id, {
+      ...newUserInfo,
       ...values,
     })
       .then(() => {

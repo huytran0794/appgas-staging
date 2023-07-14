@@ -1,6 +1,8 @@
 import { Table } from "antd";
 import React from "react";
 const CustomerOrderHistory = ({ customerInfo }) => {
+  console.log("customerInfo");
+  console.log(customerInfo);
   let orderHistory = customerInfo.order_history;
   const columns = [
     {

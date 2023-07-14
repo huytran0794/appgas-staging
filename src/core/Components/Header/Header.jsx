@@ -9,18 +9,21 @@ import { useLocation } from "react-router-dom";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import ADMIN_SERVICE_FIREBASE from "../../services/adminServ.firebase";
 
 function Header({ handleSearchInput }) {
   let searchRef = useRef(null);
   let navigate = useNavigate();
   let location = useLocation();
-
   let userInfo = useSelector((state) => {
     console.log("state");
     console.log(state.userReducer.userInfo);
 
     return state.userReducer.userInfo;
   });
+
+
   let handleDebounce = (e, searchRef) => {
     let value = e.target.value;
     if (searchRef.current) {
@@ -40,7 +43,6 @@ function Header({ handleSearchInput }) {
   };
 
   let handleManageAdmin = () => {
-    // navigate("/master/admin/add-admin");
     navigate("/master/admin/admin-management");
   };
 

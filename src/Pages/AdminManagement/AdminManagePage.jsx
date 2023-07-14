@@ -6,13 +6,33 @@ import { useNavigate } from "react-router-dom";
 import AdminManageTable from "./AdminManageTable";
 import { Button } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
+import MASTER_SERVICE_FIREBASE from "../../core/services/masterServ.firebase";
+import { useState } from "react";
 const AdminManagePage = () => {
   let navigate = useNavigate();
-
+  const [adminList, setAdminList] = useState([]);
   useEffect(() => {
     if (LOCAL_SERVICE.user.getRole() !== "master") {
       navigate("/");
     }
+    let getSnapShot = (snapshot) => {
+      if (snapshot.exists()) {
+        let returnedData = [];
+        snapshot.forEach((item) => {
+          returnedData = [
+            ...returnedData,
+            {
+              key: item.key,
+              ...item.val(),
+              id: item.key,
+            },
+          ];
+        });
+        setAdminList(returnedData);
+      }
+    };
+
+    MASTER_SERVICE_FIREBASE.getAdminInfoObserver(getSnapShot);
   }, []);
 
   const tableHeader = (
@@ -33,7 +53,7 @@ const AdminManagePage = () => {
       <SectionWrapper
         sectionClass={"master"}
         title={tableHeader}
-        content={<AdminManageTable />}
+        content={<AdminManageTable adminListData={adminList} />}
       />
     </>
   );

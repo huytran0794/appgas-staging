@@ -42,6 +42,17 @@ const MASTER_SERVICE_FIREBASE = {
       setFunc(snapshot);
     });
   },
+  getSingleAdminInfoObserver: (setFunc, adminId) => {
+    onValue(generateDbRef(`/admin/${adminId}`), (snapshot) => {
+      setFunc(snapshot);
+    });
+  },
+
+  getSingleMasterInfoObserver: (setFunc, masterId) => {
+    onValue(generateDbRef(`/master/${masterId}`), (snapshot) => {
+      setFunc(snapshot);
+    });
+  },
 };
 
 export default MASTER_SERVICE_FIREBASE;
