@@ -19,7 +19,7 @@ const AddUserForm = ({ layout = "vertical", size = "large", customerInfo }) => {
 
   const navigate = useNavigate();
 
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
     USER_SERVICE_FIREBASE.getLastDataRef("/users")

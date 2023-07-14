@@ -15,7 +15,7 @@ const AddCustomerForm = ({
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const initialValues = { ...customerInfo };
-  const [customerId, setCustomerId] = useState("");
+  const [customerId, setCustomerId] = useState(0);
 
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);

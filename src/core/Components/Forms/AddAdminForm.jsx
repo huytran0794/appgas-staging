@@ -10,7 +10,7 @@ import { useRef } from "react";
 const AddAdminForm = ({ layout = "vertical", size = "large" }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [adminId, setAdminId] = useState();
+  const [adminId, setAdminId] = useState(0);
 
   const buttonRef = useRef(null);
   const buttonCancelRef = useRef(null);
