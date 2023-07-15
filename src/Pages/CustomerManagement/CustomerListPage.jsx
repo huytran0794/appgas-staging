@@ -24,17 +24,19 @@ const CustomerListPage = () => {
   useEffect(() => {
     let getSnapShot = (snapshot) => {
       let returnedData = [];
-      snapshot.forEach((item) => {
-        returnedData = [
-          ...returnedData,
-          {
-            ...item.val(),
-            id: item.key,
-            map: mapStringSplice(item.val().map),
-          },
-        ];
-      });
-      setCustomerList(returnedData);
+      if (snapshot.exists()) {
+        snapshot.forEach((item) => {
+          returnedData = [
+            ...returnedData,
+            {
+              ...item.val(),
+              id: item.key,
+              map: mapStringSplice(item.val().map),
+            },
+          ];
+        });
+        setCustomerList(returnedData);
+      }
     };
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);

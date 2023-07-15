@@ -14,16 +14,18 @@ const CustomerManagementPage = () => {
   useEffect(() => {
     let getSnapShot = (snapshot) => {
       let returnedData = [];
-      snapshot.forEach((item) => {
-        returnedData = [
-          ...returnedData,
-          {
-            ...item.val(),
-            id: item.key,
-          },
-        ];
-      });
-      setCustomerList(returnedData);
+      if (snapshot.exists()) {
+        snapshot.forEach((item) => {
+          returnedData = [
+            ...returnedData,
+            {
+              ...item.val(),
+              id: item.key,
+            },
+          ];
+        });
+        setCustomerList(returnedData);
+      }
     };
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);

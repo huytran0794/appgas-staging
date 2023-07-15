@@ -26,8 +26,6 @@ const UserTaskPage = () => {
             ];
           });
           setUserList(returnedData);
-        } else {
-          window.location.href = "/";
         }
       };
 

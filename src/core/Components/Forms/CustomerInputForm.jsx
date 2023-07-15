@@ -26,17 +26,19 @@ const CustomerInputForm = ({
   useEffect(() => {
     let getSnapShot = (snapshot) => {
       let returnedData = [];
-      snapshot.forEach((item) => {
-        returnedData = [
-          ...returnedData,
-          {
-            key: item.key,
-            ...item.val(),
-            id: item.key,
-          },
-        ];
-      });
-      setCustomerList(returnedData);
+      if (snapshot.exists()) {
+        snapshot.forEach((item) => {
+          returnedData = [
+            ...returnedData,
+            {
+              key: item.key,
+              ...item.val(),
+              id: item.key,
+            },
+          ];
+        });
+        setCustomerList(returnedData);
+      }
     };
     CUSTOMER_SERVICE_FIREBASE.getCustomerInfoObserver(getSnapShot);
   }, []);
