@@ -22,7 +22,7 @@ const LoginPage = () => {
     if (LOCAL_SERVICE.user.get()) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleFinish = (values, buttonRef) => {
     buttonRef.current.disabled = true;

@@ -28,7 +28,7 @@ const UserTaskAssign = () => {
     };
 
     USER_SERVICE_FIREBASE.getSingleUserInfoObserver(getSnapShot, id);
-  }, []);
+  }, [id]);
   const bgClass = "bg-white rounded-lg p-6 shadow-xl";
   const userProfile = (userInfo) => {
     return (

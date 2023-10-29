@@ -31,7 +31,7 @@ const CustomerDetail = () => {
       }
     };
     CUSTOMER_SERVICE_FIREBASE.getSingleCustomerInfoObserver(getSnapShot, id);
-  }, []);
+  }, [id]);
 
   const bgClass = "bg-white rounded-lg shadow-lg p-6";
   const renderPersonalInfo = (customerInfo) => {

@@ -31,7 +31,7 @@ const UserTaskPage = () => {
 
       USER_SERVICE_FIREBASE.getUserInfoObserver(getSnapShot);
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>

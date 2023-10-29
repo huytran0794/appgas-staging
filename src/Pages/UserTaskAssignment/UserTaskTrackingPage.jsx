@@ -22,7 +22,7 @@ const UserTaskTrackingPage = () => {
         if (snapshot.val().hasOwnProperty("tasks")) {
           returnedData = snapshot
             .val()
-            .tasks.filter((task) => task.completed == false);
+            .tasks.filter((task) => task.completed === false);
           setTaskList([...returnedData]);
         }
       } else {
@@ -34,7 +34,7 @@ const UserTaskTrackingPage = () => {
       getSnapShot,
       currentUserInfo.id
     );
-  }, []);
+  }, [navigate, currentUserInfo.id]);
 
   return (
     <>

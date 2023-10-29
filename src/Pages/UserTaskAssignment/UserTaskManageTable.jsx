@@ -1,6 +1,5 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
 
 import UserActionButtons from "./UserTaskActionButtons";
 
@@ -35,20 +34,20 @@ const UserTaskManageTable = ({ userListData }) => {
   ];
 
   // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User",
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
+  // const rowSelection = {
+  //   onChange: (selectedRowKeys, selectedRows) => {
+  //     console.log(
+  //       `selectedRowKeys: ${selectedRowKeys}`,
+  //       "selectedRows: ",
+  //       selectedRows
+  //     );
+  //   },
+  //   getCheckboxProps: (record) => ({
+  //     disabled: record.name === "Disabled User",
+  //     // Column configuration not to be checked
+  //     name: record.name,
+  //   }),
+  // };
 
   return (
     <Table

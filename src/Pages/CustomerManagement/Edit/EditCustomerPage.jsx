@@ -32,7 +32,7 @@ const EditCustomerPage = () => {
       }
     };
     CUSTOMER_SERVICE_FIREBASE.getSingleCustomerInfoObserver(getSnapShot, id);
-  }, []);
+  }, [id]);
 
   const renderPage = (customerInfo) => {
     const avatarDiv = (

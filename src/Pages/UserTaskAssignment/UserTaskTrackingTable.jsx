@@ -1,7 +1,6 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
 
-import USER_SERVICE_FIREBASE from "../../core/services/userServ.firebase";
 import UserTaskTrackingActionButtons from "./UserTaskTrackingActionButtons";
 
 const UserTaskTrackingTable = ({ taskListData }) => {
