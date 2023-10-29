@@ -9,7 +9,6 @@ import CustomNotification from "../Notification/CustomNotification";
 import CUSTOMER_SERVICE_FIREBASE from "../../services/customerServ.firebase";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
 
-import { isValidCoordinate } from "../../utils/utils";
 import { useRef } from "react";
 
 const TaskDetailForm = ({

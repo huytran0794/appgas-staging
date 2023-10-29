@@ -9,9 +9,6 @@ import { useLocation } from "react-router-dom";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import ADMIN_SERVICE_FIREBASE from "../../services/adminServ.firebase";
-
 function Header({ handleSearchInput }) {
   let searchRef = useRef(null);
   let navigate = useNavigate();
@@ -22,7 +19,6 @@ function Header({ handleSearchInput }) {
 
     return state.userReducer.userInfo;
   });
-
 
   let handleDebounce = (e, searchRef) => {
     let value = e.target.value;

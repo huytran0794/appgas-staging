@@ -6,7 +6,7 @@ import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapp
 import Header from "../../../core/Components/Header/Header";
 
 const OrderDetail = () => {
-  const { customer_id, id } = useParams();
+  // const { customer_id, id } = useParams();
   const bgClass = "bg-white rounded-lg p-4 shadow-lg py-[30px] px-[20px]";
   const renderOrderDetail = (order) => {
     return (
@@ -60,17 +60,17 @@ const OrderDetail = () => {
   const contentBody = (order) => {
     return renderOrderDetail(order);
   };
-  const renderContent = (order) => {
-    if (Object.keys(order).length) {
-      return (
-        <div className="wrapper flex flex-col items-center justify-center gap-4 font-poppins">
-          {contentHeader(order)}
-          {contentBody(order)}
-        </div>
-      );
-    }
-    return null;
-  };
+  // const renderContent = (order) => {
+  //   if (Object.keys(order).length) {
+  //     return (
+  //       <div className="wrapper flex flex-col items-center justify-center gap-4 font-poppins">
+  //         {contentHeader(order)}
+  //         {contentBody(order)}
+  //       </div>
+  //     );
+  //   }
+  //   return null;
+  // };
   return (
     <>
       <Header />

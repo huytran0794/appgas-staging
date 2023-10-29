@@ -2,7 +2,6 @@ import React from "react";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
-import { SlEye } from "react-icons/sl";
 
 import { Modal, Popover, Space } from "antd";
 

@@ -1,6 +1,6 @@
 import { Button, notification } from "antd";
 import { useEffect, useRef } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import CustomNotification from "../../Components/Notification/CustomNotification";
 import { LOCAL_SERVICE } from "../../services/localServ";
 import USER_SERVICE_FIREBASE from "../../services/userServ.firebase";
@@ -18,7 +18,7 @@ const PrivateRoutes = () => {
     let notiKey = Date.now();
     let dataSnap = snapshot.val();
     if (snapshot.key === "tasks") {
-      if (dataSnap.length - auth[snapshot.key].length == 1) {
+      if (dataSnap.length - auth[snapshot.key].length === 1) {
         if (notiRef.current) {
           notification.destroy(notiRef.current);
         }

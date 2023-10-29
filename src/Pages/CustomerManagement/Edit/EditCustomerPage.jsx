@@ -12,7 +12,6 @@ import clsx from "clsx";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
-  let navigate = useNavigate();
   let [customerInfo, setCustomerInfo] = useState({});
   const bgClass = "bg-white rounded-lg shadow-lg p-2";
 
