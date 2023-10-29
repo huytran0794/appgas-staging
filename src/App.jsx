@@ -30,9 +30,9 @@ function App() {
           {/* Private routes */}
           <Route element={<PrivateRoutes />}>
             <Route index element={<CustomerListPage />} />
-            <Route path="/manager" element={<CustomerManagementPage />} />
-            <Route path="/admin/user-management" element={<UserManagePage />} />
-            <Route path="/admin/add-user" element={<AddUserPage />} />
+            <Route path="manager" element={<CustomerManagementPage />} />
+            <Route path="admin/user-management" element={<UserManagePage />} />
+            <Route path="admin/add-user" element={<AddUserPage />} />
 
             <Route path="admin/user/view/:id" element={<UserDetail />} />
             <Route path="admin/user/edit/:id" element={<EditUserPage />} />
